@@ -6,7 +6,7 @@ Running record of decisions, trade-offs, issues and AI usage while building this
 
 | # | Decision | Why | Alternatives / trade-off |
 |---|----------|-----|--------------------------|
-| D1 | Test runner: Postman + Newman | Named in the brief; headless; JUnit reporter built in; easy to run in Azure DevOps | ReadyAPI (heavier setup); code-based frameworks such as C# or Playwright (outside the stated tools; asked the recruiter) |
+| D1 | Test runner: Postman + Newman | Named in the brief, and the recruiter confirmed (OfferZen, 17 Nov) that submissions must use Postman/Newman or ReadyAPI as they are used to assess them; headless; JUnit reporter built in; easy to run in Azure DevOps | ReadyAPI (heavier setup); code-based frameworks such as C# or Playwright (asked the recruiter, not accepted) |
 | D2 | Target: own .NET 9 minimal API backed by SQL Server | Tests real data setup and cleanup end to end; matches Tracker's C#/.NET stack | Mock or virtual service (simpler, but the DB step would only be a demonstration) |
 | D3 | OData: hand-written parser for the subset in the brief | Small, explainable, returns 400 for anything unsupported | Full OData library (heavier, hides behaviour) |
 | D4 | Local DB: SQL Server LocalDB. Pipeline: SQL Server Docker container | No Docker needed locally; same scripts and env-var connection string in both places | Docker everywhere (needs Docker Desktop/WSL2 locally) |
@@ -25,7 +25,7 @@ Running record of decisions, trade-offs, issues and AI usage while building this
 - A1: `$filter` dates: see D8.
 - A2: Status codes: 401 missing or invalid key, 400 validation errors, 404 unknown id, 409 duplicate id, 201 on successful POST.
 - A3: `$top` limits: see D10.
-- Questions sent to the recruiter (date format and status codes; other frameworks): status pending. Proceeding on the assumptions above.
+- Questions to the recruiter: (1) other frameworks, answered: stick to Postman/Newman or ReadyAPI (D1). (2) Date format in `$filter` and error status codes: not sent / no answer yet. Proceeding on A1 to A3.
 
 ## Test plan coverage
 
@@ -36,7 +36,6 @@ Running record of decisions, trade-offs, issues and AI usage while building this
 | Date | Tool | What I used it for | What I reviewed / corrected / rejected |
 |------|------|--------------------|-----------------------------------------|
 | 17 Nov | Claude (chat) | Planning, test plan draft, architecture options, decision log | Chose Postman over code-based frameworks; adjusted the plan to my setup (LocalDB, no Docker locally) |
-| | GitHub Copilot (agent mode, VS Code) | Code generation for scripts, API, collection and pipeline | (Add an entry for each piece: what I changed or rejected) |
 | 17 Nov | GitHub Copilot (agent, VS Code) | Generated db/01_schema.sql, 02_seed.sql and 99_cleanup.sql from my instructions file | Read all three scripts and checked the types, the Positions-to-Devices foreign key and the child-first cleanup order. Ran them against LocalDB: schema twice (idempotent), seed, cleanup, seed again, then confirmed 5/4/3 positions per device and 12 in total, matching the seed header. No changes needed to the generated scripts. Chose the database name PositionsDb (D11) and the required-field and device rules (D12, D13) myself. Also had the scripts reviewed in Claude chat. |
 
 ## Issues hit and fixes
