@@ -22,7 +22,17 @@ collection.item = folderNames.map((folderName) => {
         .filter((file) => /^\d+-.*\.json$/.test(file))
         .sort();
 
-    folder.item = requestFiles.map((file) => readJson(path.join(folderDir, file)));
+    folder.item = requestFiles.map((file) => {
+        const request = readJson(path.join(folderDir, file));
+        const body = request.request.body;
+
+        // If the request points to a body file, load its text into the body.
+        if (body && body.rawFile) {
+            body.raw = fs.readFileSync(path.join(folderDir, body.rawFile), 'utf8').trim();
+            delete body.rawFile;
+        }
+        return request;
+    });
     return folder;
 });
 

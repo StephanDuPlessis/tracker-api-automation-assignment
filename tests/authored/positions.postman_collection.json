@@ -176,6 +176,2022 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "2 POST positions",
+      "item": [
+        {
+          "name": "Valid position returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-001\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing ID returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing deviceId returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-102\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing occurredAt returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-103\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing latitude returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-104\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing longitude returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-105\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing speedKph returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-106\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing headingDeg returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-107\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude 90 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-108\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": 90,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude -90 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-109\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -90,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude 90.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-110\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": 90.000001,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude -90.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-111\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -90.000001,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude 180 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-112\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 180,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude -180 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-113\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": -180,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude 180.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-114\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 180.000001,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude -180.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-115\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": -180.000001,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp with an offset returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-116\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T12:00:00+02:00\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp that is not a date returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-117\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"not-a-date\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp without a timezone returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-118\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a time returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-119\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Impossible date returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-120\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-02-30T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Empty timestamp returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-121\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "id as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": 123,\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-123\",\n  \"deviceId\": 123,\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "occurredAt as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-124\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": 1737367200,\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "latitude as text returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-125\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": \"abc\",\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "longitude as text returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-126\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": \"abc\",\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph as text returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-127\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": \"fast\",\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg as text returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-128\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": \"north\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid JSON returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{ \"id\": \"pos-test-post-bad\","
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "JSON array instead of an object returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "[]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-129\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 1000000,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 5000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-130\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 5000,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph -10 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-131\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": -10,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 10000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-132\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 500 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-133\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "id of 101 characters returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId of 51 characters returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-135\",\n  \"deviceId\": \"TEST-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "latitude with 8 decimals returns 201 (rounded)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-136\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.92491234,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 0 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-137\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 0,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-138\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 1000,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 0 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-139\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 360 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-140\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 360\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "id of 100 characters returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId of 50 characters returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-142\",\n  \"deviceId\": \"TEST-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Duplicate id returns 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(409);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-001\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }

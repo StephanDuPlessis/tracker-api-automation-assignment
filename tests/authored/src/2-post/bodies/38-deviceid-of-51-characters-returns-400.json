@@ -1,0 +1,9 @@
+{
+  "id": "pos-test-post-135",
+  "deviceId": "TEST-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "occurredAt": "2025-01-20T10:00:00Z",
+  "latitude": -33.9249,
+  "longitude": 18.4241,
+  "speedKph": 60.5,
+  "headingDeg": 90
+}
