@@ -260,6 +260,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** The first OData request (filter by device, expecting the five seeded ids in order) and the `expectIds` helper for me to type. After it passed, it read the seed data, added the `expectCount` and `expectNoCount` helpers and generated the other 42 OData requests (devices, date ranges with inclusive boundaries, string functions, ordering, `$top`, `$count`, and unsupported or malformed input), each asserting an exact list of ids. It explained which cases it left out on purpose and which assumptions the tests pin.
 **What I did:** Typed the first request and the `expectIds` helper myself and ran the suite (68 requests, 109 assertions, 0 failed). The final run with the whole folder gave 110 requests, 208 assertions, 0 failed.
 
+### 24. Data integrity folder and the build guard
+
+**Prompts:**
+> yes, give me the first piece [create a position then find it with a query]
+> Failed [screenshot of the run]
+> Add this to the file please [the empty-body check in the build script]
+
+**What the AI gave:** The first two data-integrity requests for me to write (a POST and a query that must find what was created). When the run failed, it read the output and found the cause (my body file was empty, so the POST had no body and everything after it failed), proposed a build check that fails with the file name, and after I pasted the code into the chat it added it to the build script. It then added two helpers (sorting and count-versus-items) and generated the other 12 requests: count versus `$top`, ordering that follows timestamps rather than creation order, a rejected duplicate and a rejected invalid position leaving no trace, and the seeded data staying untouched.
+**What I did:** Created the folder, the body file and the first two requests, and ran the suite. The first run failed because I had not saved the body file; I saved it and the run passed (113 requests, 213 assertions). The finished folder ran twice in a row to prove it can be re-run: 127 requests, 246 assertions, 0 failed both times.
+
 ---
 
 ## What I reviewed or corrected myself
