@@ -1,13 +1,10 @@
 Clear-Host
 # Starts the Positions API for local testing.
-# The dev API key comes from scripts/set-env.local.ps1, which is gitignored.
-$envScript = Join-Path $PSScriptRoot 'set-env.local.ps1'
+# Settings (API_KEY and the database) come from .env, see .env.example.
 
-if (-not (Test-Path $envScript)) {
-    throw "Missing $envScript. Create it with: `$env:API_KEY = 'your-dev-key'"
-}
+# Work from the repo root (the project path below is relative to it), then load the settings.
+Set-Location (Join-Path $PSScriptRoot '..')
+. "$PSScriptRoot\load-env.ps1"
+Import-DotEnv
 
-# Dot-source so the key stays set. The script also moves to the repo root,
-# which is why the relative project path below works.
-. $envScript
 dotnet run --project src/PositionsApi

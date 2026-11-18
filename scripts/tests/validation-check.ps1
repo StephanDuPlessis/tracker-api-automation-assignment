@@ -1,10 +1,14 @@
 Clear-Host
-$baseUrl = 'http://localhost:5080'
-$apiKey  = $env:API_KEY
+. "$PSScriptRoot\..\load-env.ps1"
+Import-DotEnv
+
+$baseUrl = if ($env:BASE_URL) { $env:BASE_URL } else { 'http://localhost:5080' }
+$apiKey = $env:API_KEY
+
 $outFile = Join-Path $PSScriptRoot '..\..\docs\evidence\validation-after-fix.txt'
 
 if ([string]::IsNullOrWhiteSpace($apiKey)) {
-    throw 'API_KEY is not set in this PowerShell session.'
+    throw 'API_KEY is not set. Put it in .env (see .env.example).'
 }
 
 # A valid position. Each test case changes only the field it wants to break.
@@ -55,8 +59,8 @@ function Send-Position($body) {
 
 # Remove old test data first, so the script can be run again and again.
 $sqlServer = '(localdb)\MSSQLLocalDB'
-$database  = 'PositionsDb'
-$cleanup   = Join-Path $PSScriptRoot '..\..\db\99_cleanup.sql'
+$database = 'PositionsDb'
+$cleanup = Join-Path $PSScriptRoot '..\..\db\99_cleanup.sql'
 
 sqlcmd -S $sqlServer -d $database -i $cleanup
 if ($LASTEXITCODE -ne 0) { throw 'Cleanup failed. Is the database reachable?' }
@@ -68,13 +72,13 @@ sqlcmd -S $sqlServer -d $database -i $seed
 if ($LASTEXITCODE -ne 0) { throw 'Seed failed.' }
 
 # Run every case, compare the real status with the expected one, collect the lines.
-$lines    = @()
+$lines = @()
 $failures = 0
-$number   = 0
+$number = 0
 
 foreach ($case in $cases) {
     $number++
-    $result   = Send-Position (New-Body $case.Overrides)
+    $result = Send-Position (New-Body $case.Overrides)
     $bodyText = "$($result.Body)".Trim()
 
     if ($result.Status -eq $case.Expected) { $verdict = 'PASS' }

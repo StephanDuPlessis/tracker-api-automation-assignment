@@ -2,10 +2,12 @@
 # reset the test data, start the API if it is not running, build the collection,
 # run it with Newman, write the reports, stop the API, and exit with Newman's result.
 
-# Sets API_KEY from the local, gitignored file (and moves to the repo root).
-. "$PSScriptRoot\..\set-env.local.ps1"
+# Work from the repo root (the paths below are relative to it), then load the settings from .env.
+Set-Location (Join-Path $PSScriptRoot '..\..')
+. "$PSScriptRoot\..\load-env.ps1"
+Import-DotEnv
 
-# Where the API is. Can be overridden with the BASE_URL environment variable.
+# Where the API is. Comes from BASE_URL (the environment or .env), with a local default.
 $baseUrl = if ($env:BASE_URL) { $env:BASE_URL } else { 'http://localhost:5080' }
 
 # --- 1. Reset the test data so the suite can be re-run -----------------------------------
