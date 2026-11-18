@@ -297,6 +297,39 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 27. Completing the Postman export collection as a second option
+
+**Prompts:**
+> I want another thing in this solution, it creates double work, but I believe it to be valuable. In the postman export folder we need to write all the tests in the collection file and create another ps1 script called run tests 2 where we run those so that we can see the advantages and disadvantages of both of our options. Don't change anything yet, what do you think? [...]
+> I am not going to type anything, what I mean by the Postman way, is that you saw what I did in the existing collection file and just add to it
+> 2 [write each request fresh into the export file, not copied from the authored suite]
+> Go ahead and complete the postman collection
+
+**Decision:** Finish `tests/postman-export/positions.postman_collection.json` in the same style as my Auth folder (one file, test scripts inline, helpers in the collection-level script), as a second option next to the authored suite, so I can compare the two approaches and answer "why didn't you just do it the Postman way?" with evidence. A matching `run-tests-2.ps1` is the next step and is not built yet.
+**Why:** The brief names Postman and Newman, and the assessors may expect a plain Postman collection. Having both lets me show the trade-offs (one importable file with no build step, against small source files, shared bodies and a build script) and that I considered more than one way.
+
+**What the AI gave:** Its opinion first (worth doing, but only a fair comparison if the second file is genuinely written the Postman way, and best after the pipeline and docs). It then pointed out that the authored collection already looks like what the export would become, and offered to copy folders 2 to 5 from it; I chose to have them written fresh instead. It wrote the helpers and the POST, GET by id, OData and data integrity requests into the export file from the API contract and the seed data, reformatted the file, and ran it with Newman twice from a reset database: 139 requests, 282 assertions, 0 failed, exit code 0. One test failed on the first run because its expected ids were wrong (the API was right); it corrected the test.
+**What I did:** Asked for the second option and its purpose, clarified what I meant by the Postman way, chose to have the requests written fresh and not copied, and asked for the work to be done. I did not type any of this file myself. I did not change `tests/authored/`.
+**Outcome:** The export collection is complete and passes against a freshly reset database. `run-tests-2.ps1` and the written comparison are still to do.
+
+---
+
+### 28. Both Postman suites should cover the same test cases
+
+**Prompts:**
+> Why do we not have the same tests in the authored and postman tests?
+> Should not both have the all the tests? Explain why
+> Yes, go ahead with the union
+
+**Decision:** Both suites should hold the same set of test cases (the union of the two), so the comparison between them is about how the suites are built and maintained, not about what they test.
+**Why:** The two suites were written independently, so each had cases the other lacked (for example extreme speed and heading values, the rounding case and the 101-character id on one side; null and boolean types, an empty body and just-outside-the-boundary values on the other). With different content, a difference in size or effort could not be blamed on the approach. It also means each suite is a full safety net on its own.
+
+**What the AI gave:** An explanation of the gap (the export was written fresh from the contract, not copied), a list of the real differences between the suites, and the argument for merging them. After my go-ahead it added 28 requests to the authored sources (one file per request, bodies in `bodies/`, the collection rebuilt) and 18 to the export file, then ran both suites twice from a reset database: authored 311 assertions, export 323, 0 failed, exit code 0 each time. It also told me the request counts are not identical (139 against 145) because some cases are variants of each other, which is why the claim is "same cases covered", not "identical tests".
+**What I did:** Asked why they differed, asked whether both should have everything, and approved the union, including changes under `tests/authored/src/`, which I had earlier said not to touch for the export work. I did not type the new requests.
+**Outcome:** Both suites pass and cover the same cases.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
