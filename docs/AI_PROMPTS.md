@@ -208,6 +208,18 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** Step-by-step Postman setup (environment with placeholders, collection-level API key, shared helper script loaded with `eval`, first Auth requests), the export and Newman run, a comparison of ways to organise a large collection (one file, several collections, small source files merged by a script), a build script design, a `scripts/tests/` layout that avoids moving the key file, and a one-command run script. It created the boilerplate JSON files and moved files; the notes for the video were written by the AI into a private, gitignored folder.
 **What I did:** Created the Postman environment and collection and the first Auth requests, exported and ran them with Newman, and hit and diagnosed an empty-environment export (`Invalid URI "http:///positions"`). Questioned the one-big-file approach and chose the two-suite layout (frozen export plus an authored suite), asked for the folder-per-group split, the environments folder and the scripts folder. Typed the first pieces of the build script and the run script and ran them; the AI wrote the final folder-based version of the build script when I asked it to update the file. The run was green: 3 requests, 5 assertions, 0 failed.
 
+### 19. POST folder and readable request bodies
+
+**Prompts:**
+> Okay, I am going to start with adding the folder and the json file
+> Build succeeded, give me the second POST request
+> Before we continue, why are we using raw and not json?
+> The reason I am asking is because this can be difficult to read [the escaped body string]
+> yes, go ahead on that basis but change the build script too and add an explination as to why in my notes as well
+
+**What the AI gave:** Instructions for the first two POST requests, an explanation of Postman's `raw` mode versus the `json` language label, and a design for keeping request bodies as plain `.json` files that the build script inlines (`rawFile`). It changed the build script, converted my first two requests to the new style, and generated the other 44 POST requests and all body files with a throwaway script kept outside the repo. It also pointed out that the POST folder should use its own device so the seeded counts stay intact.
+**What I did:** Wrote the first two POST requests myself and ran the suite. Asked why `raw` is used, found the escaped body string hard to read and asked for a better way, and approved the body-file design. Ran the suite after generation: 49 requests, 84 assertions, 0 failed. (The AI's early estimate of about 93 assertions was wrong; 84 is the correct count.)
+
 ---
 
 ## What I reviewed or corrected myself
