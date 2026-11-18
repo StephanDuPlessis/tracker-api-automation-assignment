@@ -233,6 +233,24 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** Moved the helper script out of `base.json` into a plain `src/helpers.js` (inlined by the build via `execFile`), then designed `expectStored` in two pieces: first a GET by id that checks the id, then a comparison of every field with rounding for latitude, longitude, speed and heading and an instant-based comparison for the timestamp. Found and fixed a file-name bug in the files it had generated (a minus sign was dropped from names like `latitude -90`). Ran the suite on request and, after I confirmed the first pieces worked, added the same one-line call to the other accepted POST requests.
 **What I did:** Typed the helper and the first uses myself, asked what was unclear (an existing helper, what a test label means), and ran the suite after each change. Results: 85 assertions with the id check, 87 with the two tricky cases (offset timestamp and 8-decimal latitude), 97 with all 13 accepted POST requests, 0 failed.
 
+### 21. GET by id folder
+
+**Prompts:**
+> yes, give me the first piece [seeded position found]
+> Build succeeded, run the tests
+
+**What the AI gave:** The first GET by id request (the seeded position with its exact values) and a second helper, `expectPosition`, then the other four requests: unknown id, a 101-character id that starts with a stored 100-character id (regression test for the truncation bug from the code review), an id with encoded special characters, and a missing key.
+**What I did:** Typed the helper and the first request myself, ran the suite (63 requests, 99 assertions, 0 failed). The rest of the folder was written by the AI; the final run gave 67 requests, 107 assertions, 0 failed.
+
+### 22. Consistency across the test folders
+
+**Prompts:**
+> Before we continue with anything. Should the tests' structures not match? For example, in 2-post we have a bodies folder, but we don't have it in the others. Things should be consistent
+> yes, go ahead with all three
+
+**What the AI gave:** A check of the three test folders that found more than the `bodies/` difference (mixed array style, one file indented with 4 spaces, mixed line endings), with a recommendation: write the layout rule down, do a one-time formatting pass and add `.editorconfig` and `.gitattributes`. It ran the pass, proved the merged collection was byte-for-byte identical afterwards and that the suite still passed (67 requests, 107 assertions, 0 failed).
+**What I did:** Spotted the inconsistency myself and asked for it to be fixed before building more, then approved all three changes.
+
 ---
 
 ## What I reviewed or corrected myself
