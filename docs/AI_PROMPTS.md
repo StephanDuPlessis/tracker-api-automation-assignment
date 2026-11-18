@@ -181,6 +181,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** The OData parser (`ODataQuery.cs`, `ODataParser.cs`), `QueryAsync` and its helpers in `PositionRepository.cs`, and the `GET /positions` route in `Program.cs`, one small piece at a time with a short "why" for each. A review of the finished parser (no bugs found, three cosmetic points), a view on `.editorconfig` (not needed now), and ten manual `curl.exe` calls to check the endpoint.
 **What I did:** Typed each piece myself and built after each one. Found that the first three calls returned 401 because the API key was not set in that terminal, fixed it, and re-ran. All ten manual calls then gave the expected results. Questioned the `sealed` keyword and the `.editorconfig` idea, and decided to keep the first and skip the second for now. Caught that the formatter had changed the indentation of a line in `Position.cs` and had it restored. The AI's first version of the date helper pointed at the wrong class name (`Position` instead of `PositionRequest`); the compiler error showed it and it was corrected.
 
+### 17. Handover readiness and code review
+
+**Prompts:**
+> Is the code that a dev would give me to test complete?
+> So what is missing before this is handed over for testing?
+> yes, start the review
+
+**What the AI gave:** An honest list of what is and is not done (the README is two lines, no `.env.example`, `Program.cs` and `PositionRepository.cs` never reviewed as a whole). Then a review of `Position.cs`, `PositionRepository.cs`, `Program.cs` and the schema: no blocking bugs, one small fix (a lookup id longer than 100 characters is silently truncated in `GetByIdAsync`) and several behaviours to document.
+**What I did:** Asked for the review before starting the Postman work, so the tests are written against reviewed code.
+
 ---
 
 ## What I reviewed or corrected myself

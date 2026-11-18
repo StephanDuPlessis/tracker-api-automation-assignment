@@ -15,7 +15,7 @@ public sealed class PositionRepository(string connectionString)
             WHERE Id = @Id;
             """,
             connection);
-        command.Parameters.Add("@Id", SqlDbType.NVarChar, 100).Value = id;
+        command.Parameters.Add("@Id", SqlDbType.NVarChar).Value = id;
 
         await using var reader = await command.ExecuteReaderAsync(CommandBehavior.SingleRow, cancellationToken);
         if (!await reader.ReadAsync(cancellationToken))

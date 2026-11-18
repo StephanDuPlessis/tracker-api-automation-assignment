@@ -93,7 +93,9 @@ static async Task<IResult> GetPositionAsync(
     CancellationToken cancellationToken)
 {
     var position = await repository.GetByIdAsync(id, cancellationToken);
-    return position is null ? Results.NotFound() : Results.Ok(position);
+    return position is null
+        ? Results.NotFound(new { error = "Position not found." })
+        : Results.Ok(position);
 }
 
 static async Task<IResult> QueryPositionsAsync(
