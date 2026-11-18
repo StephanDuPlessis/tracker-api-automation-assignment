@@ -1,0 +1,39 @@
+const fs = require('fs');
+const path = require('path');
+
+// __dirname is the folder this script lives in, so it works from any directory.
+const srcDir = path.join(__dirname, 'src');
+
+// Start from the base: name, auth setting, helper script. It has no requests yet.
+const collection = readJson(path.join(srcDir, 'base.json'));
+
+// Each numbered folder in src/ (1-auth, 2-post, ...) becomes one Postman folder.
+// Inside it, _folder.json holds the folder name and every numbered .json file is one request.
+const folderNames = fs.readdirSync(srcDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && /^\d+-/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+
+collection.item = folderNames.map((folderName) => {
+    const folderDir = path.join(srcDir, folderName);
+    const folder = readJson(path.join(folderDir, '_folder.json'));
+
+    const requestFiles = fs.readdirSync(folderDir)
+        .filter((file) => /^\d+-.*\.json$/.test(file))
+        .sort();
+
+    folder.item = requestFiles.map((file) => readJson(path.join(folderDir, file)));
+    return folder;
+});
+
+// Write the merged collection next to this script.
+const outputPath = path.join(__dirname, 'positions.postman_collection.json');
+fs.writeFileSync(outputPath, JSON.stringify(collection, null, 2) + '\n');
+
+const requestCount = collection.item.reduce((total, folder) => total + folder.item.length, 0);
+console.log(`Built ${outputPath}: ${folderNames.length} folder(s), ${requestCount} request(s)`);
+
+// Reads a .json file and returns it as an object.
+function readJson(file) {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+}

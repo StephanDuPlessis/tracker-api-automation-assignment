@@ -1,0 +1,321 @@
+{
+  "info": {
+    "_postman_id": "868dec06-013f-481e-9431-8d42d6b30b51",
+    "name": "Positions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37726232"
+  },
+  "item": [
+    {
+      "name": "1 Auth",
+      "item": [
+        {
+          "name": "Missing API key returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();\r\nh.expectStatus(401);\r\nh.expectError();\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Missing API key returns 401",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/positions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "positions"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 18 Nov 2026 18:35:58 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Unauthorized.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Invalid API key returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();\r\nh.expectStatus(401);\r\nh.expectError();\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "wrong-key-123",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "X-API-Key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Invalid API key returns 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/positions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "positions"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 18 Nov 2026 18:42:52 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Unauthorized.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Valid API key returns 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();\r\nh.expectStatus(200);\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$top=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$top",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Valid API key returns 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/positions?$top=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "positions"
+                  ],
+                  "query": [
+                    {
+                      "key": "$top",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 18 Nov 2026 18:43:08 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "Kestrel"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"value\": [\n    {\n      \"id\": \"pos-test-10001-01\",\n      \"deviceId\": \"TEST-D-10001\",\n      \"occurredAt\": \"2025-01-15T08:00:00Z\",\n      \"latitude\": 51.507351,\n      \"longitude\": -0.127758,\n      \"speedKph\": 42.5,\n      \"headingDeg\": 90\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2 POST positions",
+      "item": []
+    },
+    {
+      "name": "3 GET by id",
+      "item": []
+    },
+    {
+      "name": "4 OData queries",
+      "item": []
+    },
+    {
+      "name": "5 Data integrity",
+      "item": []
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// Shared helpers for every test script in this collection.\r",
+          "// Postman scripts cannot import each other, so the code lives in one function,\r",
+          "// its text is saved in a collection variable, and each test script loads it with eval().\r",
+          "function buildHelpers() {\r",
+          "    return {\r",
+          "        // The response must have exactly this HTTP status code.\r",
+          "        expectStatus(code) {\r",
+          "            pm.test(`Status is ${code}`, () => {\r",
+          "                pm.response.to.have.status(code);\r",
+          "            });\r",
+          "        },\r",
+          "\r",
+          "        // Every error response must be JSON of the form { \"error\": \"some text\" }.\r",
+          "        expectError() {\r",
+          "            pm.test('Body is { \"error\": \"...\" }', () => {\r",
+          "                const body = pm.response.json();\r",
+          "                pm.expect(body).to.have.property('error');\r",
+          "                pm.expect(body.error).to.be.a('string').and.not.empty;\r",
+          "            });\r",
+          "        }\r",
+          "    };\r",
+          "}\r",
+          "\r",
+          "pm.collectionVariables.set('helpers', buildHelpers.toString());\r",
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "helpers",
+      "value": ""
+    }
+  ]
+}

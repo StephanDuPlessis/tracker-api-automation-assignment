@@ -1,0 +1,26 @@
+{
+  "name": "Valid API key returns 200",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$top=1",
+      "host": ["{{baseUrl}}"],
+      "path": ["positions"],
+      "query": [{ "key": "$top", "value": "1" }]
+    }
+  },
+  "response": []
+}

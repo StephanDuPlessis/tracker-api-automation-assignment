@@ -1,0 +1,50 @@
+{
+  "info": {
+    "name": "Positions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "X-Api-Key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Shared helpers for every test script in this collection.",
+          "// Postman scripts cannot import each other, so the code lives in one function,",
+          "// its text is saved in a collection variable, and each test script loads it with eval().",
+          "function buildHelpers() {",
+          "    return {",
+          "        // The response must have exactly this HTTP status code.",
+          "        expectStatus(code) {",
+          "            pm.test(`Status is ${code}`, () => {",
+          "                pm.response.to.have.status(code);",
+          "            });",
+          "        },",
+          "",
+          "        // Every error response must be JSON of the form { \"error\": \"some text\" }.",
+          "        expectError() {",
+          "            pm.test('Body is { \"error\": \"...\" }', () => {",
+          "                const body = pm.response.json();",
+          "                pm.expect(body).to.have.property('error');",
+          "                pm.expect(body.error).to.be.a('string').and.not.empty;",
+          "            });",
+          "        }",
+          "    };",
+          "}",
+          "",
+          "pm.collectionVariables.set('helpers', buildHelpers.toString());"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "helpers", "value": "" }
+  ]
+}

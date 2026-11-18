@@ -1,0 +1,33 @@
+{
+  "name": "Invalid API key returns 401",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(401);",
+          "h.expectError();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": [
+        { "key": "key", "value": "X-Api-Key", "type": "string" },
+        { "key": "value", "value": "wrong-key-123", "type": "string" }
+      ]
+    },
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions",
+      "host": ["{{baseUrl}}"],
+      "path": ["positions"]
+    }
+  },
+  "response": []
+}
