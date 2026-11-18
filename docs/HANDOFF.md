@@ -19,7 +19,7 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 - Parked decision: OData option names (`$TOP`) are accepted case-insensitively (see the memory note on the pre-submission re-check). Document in SOLUTION.md or reject uppercase.
 - Done: Node v26.13.1 and npm 11.20.0 installed. Newman 6.2.3 and newman-reporter-htmlextra 1.23.1 installed globally and `newman -v` works. Postman desktop is not installed yet (needed only to build the collection).
 - Done: BUILD_NOTES has D16, A4 (rounding limitation), the validation issues and the AI usage row.
-- Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/validation-check.ps1` (built by the owner in small pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
+- Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/tests/validation-check.ps1` (built by the owner in small pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
 - The validation script resets the database itself at the start (`99_cleanup.sql`, then `02_seed.sql`), so it can be re-run with no manual SQL. It leaves the seed rows plus the validation rows from cases 8 to 14 in the database; the next run's cleanup removes them.
 - Helper scripts: `scripts/start-api.ps1` starts the API (loads the key from the gitignored `scripts/set-env.local.ps1`). `scripts/set-env.local.ps1` sets `API_KEY` and moves to the repo root; run it with F5 in the ISE or dot-sourced.
 
@@ -27,7 +27,7 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ## In progress
 
-- Nothing is being built right now. The OData work is finished and checked by hand but NOT committed yet: untracked `ODataQuery.cs` and `ODataParser.cs`; modified `Position.cs`, `PositionRepository.cs`, `Program.cs`, `.gitignore`, `docs/AI_PROMPTS.md` (entries 15 and 16) and this file. The owner commits themselves (suggested three commits: parser, repository plus endpoint, docs and gitignore).
+- Postman: the real suite is `tests/authored/` (small source files in `src/<n>-<group>/`, one file per request, `_folder.json` for the folder name, `base.json` for the collection settings and helper; `build-collection.js` merges them; environments in `environments/`). `tests/postman-export/` is the frozen GUI export (Auth only, not run by the pipeline, contains Date headers in saved examples). `scripts/tests/run-tests.ps1` (piece 1) builds and runs Newman: green, 3 requests and 5 assertions for the Auth folder. Next: the owner writes the first POST requests in `src/2-post/` (need a DB reset before each run because the ids are fixed), then the remaining folders, then grow `run-tests.ps1` (DB reset, start and stop the API, reporters, cleanup, exit code). Uncommitted: `tests/`, `scripts/tests/`, doc edits. Do not commit `.vscode/`.
 - Local-only (gitignored): `scripts/set-env.local.ps1`, `docs/CODE_NOTES.md` and the `docs/notes/` folder.
 - `docs/CODE_NOTES.md` (general topics) and `docs/notes/<Class>.md` (one file per class) are the owner's private study notes for the video and interview. They are gitignored on purpose: never commit them, never reference them from committed docs. Claude writes these notes (the owner types the code); `docs/notes/ODataParser.md` exists and gets a section per piece.
 - Notes for the owner's video and interview are up to date for every piece built so far (`docs/notes/ODataQuery.md`, `ODataParser.md`, `PositionRepository.md`, `Program.md`). Keep adding a section per piece.
@@ -35,9 +35,9 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ## Next steps, in order
 
-1. The owner commits the OData work (see In progress).
+1. Done: OData work and review fixes committed and pushed.
 2. Optional: re-run the six basic calls (201, 200, 401, 409, 400, 404) once against the finished API. For a clean seed-only state run `db\99_cleanup.sql` then `db\02_seed.sql`.
-3. Install Postman (authoring only; Newman is the runner). Build the Postman collection in `tests/`, run script in `scripts/`, pipeline `azure-pipelines.yml`, README.md, SOLUTION.md.
+3. Install Postman (authoring only; Newman is the runner). Build the Postman collection in `tests/`, run script in `scripts/tests/`, pipeline `azure-pipelines.yml`, README.md, SOLUTION.md.
 
 ## Things to remember
 
@@ -63,7 +63,7 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ### Notes for the Postman collection
 
-- Port the 14 validation cases from `scripts/validation-check.ps1` into the POST folder (D16 limits and boundaries are not in the plan yet). Use a data file or a pre-request script to change one field per case.
+- Port the 14 validation cases from `scripts/tests/validation-check.ps1` into the POST folder (D16 limits and boundaries are not in the plan yet). Use a data file or a pre-request script to change one field per case.
 - After each successful POST, assert stored values with a GET by id (the POST only echoes the input).
 - Keep the API key out of the exported environment file (placeholder only).
 - Pin Newman 6.2.3 and newman-reporter-htmlextra 1.23.1 in the pipeline.

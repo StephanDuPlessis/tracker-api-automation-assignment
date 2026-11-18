@@ -1,7 +1,7 @@
 Clear-Host
 $baseUrl = 'http://localhost:5080'
 $apiKey  = $env:API_KEY
-$outFile = Join-Path $PSScriptRoot '..\docs\evidence\validation-after-fix.txt'
+$outFile = Join-Path $PSScriptRoot '..\..\docs\evidence\validation-after-fix.txt'
 
 if ([string]::IsNullOrWhiteSpace($apiKey)) {
     throw 'API_KEY is not set in this PowerShell session.'
@@ -56,13 +56,13 @@ function Send-Position($body) {
 # Remove old test data first, so the script can be run again and again.
 $sqlServer = '(localdb)\MSSQLLocalDB'
 $database  = 'PositionsDb'
-$cleanup   = Join-Path $PSScriptRoot '..\db\99_cleanup.sql'
+$cleanup   = Join-Path $PSScriptRoot '..\..\db\99_cleanup.sql'
 
 sqlcmd -S $sqlServer -d $database -i $cleanup
 if ($LASTEXITCODE -ne 0) { throw 'Cleanup failed. Is the database reachable?' }
 
 # Put the known seed data back (3 devices, 12 positions).
-$seed = Join-Path $PSScriptRoot '..\db\02_seed.sql'
+$seed = Join-Path $PSScriptRoot '..\..\db\02_seed.sql'
 
 sqlcmd -S $sqlServer -d $database -i $seed
 if ($LASTEXITCODE -ne 0) { throw 'Seed failed.' }

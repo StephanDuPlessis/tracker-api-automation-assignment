@@ -11,7 +11,7 @@ Take-home assignment for Tracker Connect (API Automation Tester). Goal: automate
 - SQL scripts run with `sqlcmd` from the run script.
 - Config only via environment variables: `BASE_URL`, `API_KEY`, `DB_CONNECTION_STRING` (and DB credentials where needed). Never commit secrets. Provide `.env.example` with placeholders.
 - Test data isolation: all test data uses the prefixes `TEST-` (device ids) and `pos-test-` (position ids). Cleanup deletes by prefix so the suite is re-runnable with no manual steps.
-- Host is Windows with PowerShell. Provide `scripts/run-tests.ps1` and a bash equivalent for the pipeline agent.
+- Host is Windows with PowerShell. Provide `scripts/tests/run-tests.ps1` and a bash equivalent for the pipeline agent.
 
 # API contract
 
@@ -37,7 +37,7 @@ docs/BUILD_NOTES.md
 src/PositionsApi/
 db/01_schema.sql  db/02_seed.sql  db/99_cleanup.sql
 tests/positions.postman_collection.json  tests/local.postman_environment.json
-scripts/run-tests.ps1  scripts/run-tests.sh
+scripts/tests/run-tests.ps1  scripts/tests/run-tests.sh  scripts/tests/validation-check.ps1
 ```
 
 Schema: `Devices` (DeviceId PK, Name) and `Positions` (Id PK, DeviceId FK, OccurredAt datetimeoffset, Latitude, Longitude, SpeedKph, HeadingDeg), index on (DeviceId, OccurredAt).

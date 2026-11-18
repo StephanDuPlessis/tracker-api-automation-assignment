@@ -191,6 +191,23 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** An honest list of what is and is not done (the README is two lines, no `.env.example`, `Program.cs` and `PositionRepository.cs` never reviewed as a whole). Then a review of `Position.cs`, `PositionRepository.cs`, `Program.cs` and the schema: no blocking bugs, one small fix (a lookup id longer than 100 characters is silently truncated in `GetByIdAsync`) and several behaviours to document.
 **What I did:** Asked for the review before starting the Postman work, so the tests are written against reviewed code.
 
+### 18. Postman collection, authored suite and run script
+
+**Prompts:**
+> Give me the apikey / Does the api key need to have the single quates mark?
+> Create the collection [then: environment, helper script, first request, export and run with Newman]
+> Can we not add it to different collections so it is easier to read and write
+> Is there not a better way than having everything in one class?
+> I think we need 2, so that I can explain something. Keep one as is where it is imported from Postman, and one where it is created in VS code newman [...]
+> We need to split it by folders in VS Code so it is easier to follow
+> Have another folder with the environment file in it, incase there will be more than one in future uses
+> Why is the newman command so long? Is there a different way to run the tests that is easier?
+> We need different sub folders in the scripts folder to seperate the tests from the others
+> Add it to the explination for my video
+
+**What the AI gave:** Step-by-step Postman setup (environment with placeholders, collection-level API key, shared helper script loaded with `eval`, first Auth requests), the export and Newman run, a comparison of ways to organise a large collection (one file, several collections, small source files merged by a script), a build script design, a `scripts/tests/` layout that avoids moving the key file, and a one-command run script. It created the boilerplate JSON files and moved files; the notes for the video were written by the AI into a private, gitignored folder.
+**What I did:** Created the Postman environment and collection and the first Auth requests, exported and ran them with Newman, and hit and diagnosed an empty-environment export (`Invalid URI "http:///positions"`). Questioned the one-big-file approach and chose the two-suite layout (frozen export plus an authored suite), asked for the folder-per-group split, the environments folder and the scripts folder. Typed the first pieces of the build script and the run script and ran them; the AI wrote the final folder-based version of the build script when I asked it to update the file. The run was green: 3 requests, 5 assertions, 0 failed.
+
 ---
 
 ## What I reviewed or corrected myself
