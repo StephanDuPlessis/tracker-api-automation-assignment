@@ -1,0 +1,39 @@
+{
+  "name": "Seeded position is found with its values",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectPosition({",
+          "    id: 'pos-test-10001-01',",
+          "    deviceId: 'TEST-D-10001',",
+          "    occurredAt: '2025-01-15T08:00:00Z',",
+          "    latitude: 51.507351,",
+          "    longitude: -0.127758,",
+          "    speedKph: 42.5,",
+          "    headingDeg: 90",
+          "});"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos-test-10001-01",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos-test-10001-01"
+      ]
+    }
+  },
+  "response": []
+}

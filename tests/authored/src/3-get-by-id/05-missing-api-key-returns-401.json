@@ -1,0 +1,34 @@
+{
+  "name": "Missing API key returns 401",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(401);",
+          "h.expectError();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "auth": {
+      "type": "noauth"
+    },
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos-test-10001-01",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos-test-10001-01"
+      ]
+    }
+  },
+  "response": []
+}

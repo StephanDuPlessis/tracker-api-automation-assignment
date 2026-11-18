@@ -14,13 +14,19 @@
     }
   ],
   "request": {
-    "auth": { "type": "noauth" },
+    "auth": {
+      "type": "noauth"
+    },
     "method": "GET",
     "header": [],
     "url": {
       "raw": "{{baseUrl}}/positions",
-      "host": ["{{baseUrl}}"],
-      "path": ["positions"]
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ]
     }
   },
   "response": []

@@ -17,9 +17,18 @@
     "header": [],
     "url": {
       "raw": "{{baseUrl}}/positions?$top=1",
-      "host": ["{{baseUrl}}"],
-      "path": ["positions"],
-      "query": [{ "key": "$top", "value": "1" }]
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$top",
+          "value": "1"
+        }
+      ]
     }
   },
   "response": []

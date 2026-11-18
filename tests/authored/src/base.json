@@ -6,8 +6,16 @@
   "auth": {
     "type": "apikey",
     "apikey": [
-      { "key": "key", "value": "X-Api-Key", "type": "string" },
-      { "key": "value", "value": "{{apiKey}}", "type": "string" }
+      {
+        "key": "key",
+        "value": "X-Api-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
     ]
   },
   "event": [
@@ -20,6 +28,9 @@
     }
   ],
   "variable": [
-    { "key": "helpers", "value": "" }
+    {
+      "key": "helpers",
+      "value": ""
+    }
   ]
 }

@@ -45,7 +45,22 @@ function buildHelpers() {
 
                 });
             });
+        },
+
+        // The response body must be a position with exactly these values.
+        expectPosition(expected) {
+            pm.test(`Body is the position ${expected.id}`, () => {
+                const stored = pm.response.json();
+                pm.expect(stored.id, 'id').to.equal(expected.id);
+                pm.expect(stored.deviceId, 'deviceId').to.equal(expected.deviceId);
+                pm.expect(new Date(stored.occurredAt).getTime(), 'occurredAt').to.equal(new Date(expected.occurredAt).getTime());
+                pm.expect(stored.latitude, 'latitude').to.equal(expected.latitude);
+                pm.expect(stored.longitude, 'longitude').to.equal(expected.longitude);
+                pm.expect(stored.speedKph, 'speedKph').to.equal(expected.speedKph);
+                pm.expect(stored.headingDeg, 'headingDeg').to.equal(expected.headingDeg);
+            });
         }
+
     };
 }
 

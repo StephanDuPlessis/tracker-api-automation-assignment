@@ -1,0 +1,32 @@
+{
+  "name": "Id with encoded special characters returns 404",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// pos%20test%25x is the id 'pos test%x' (a space and a percent sign). It must be a clean 404, not a server error.",
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(404);",
+          "h.expectError();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos%20test%25x",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos%20test%25x"
+      ]
+    }
+  },
+  "response": []
+}

@@ -17,16 +17,28 @@
     "auth": {
       "type": "apikey",
       "apikey": [
-        { "key": "key", "value": "X-Api-Key", "type": "string" },
-        { "key": "value", "value": "wrong-key-123", "type": "string" }
+        {
+          "key": "key",
+          "value": "X-Api-Key",
+          "type": "string"
+        },
+        {
+          "key": "value",
+          "value": "wrong-key-123",
+          "type": "string"
+        }
       ]
     },
     "method": "GET",
     "header": [],
     "url": {
       "raw": "{{baseUrl}}/positions",
-      "host": ["{{baseUrl}}"],
-      "path": ["positions"]
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ]
     }
   },
   "response": []
