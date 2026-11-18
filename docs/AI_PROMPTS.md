@@ -220,6 +220,19 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** Instructions for the first two POST requests, an explanation of Postman's `raw` mode versus the `json` language label, and a design for keeping request bodies as plain `.json` files that the build script inlines (`rawFile`). It changed the build script, converted my first two requests to the new style, and generated the other 44 POST requests and all body files with a throwaway script kept outside the repo. It also pointed out that the POST folder should use its own device so the seeded counts stay intact.
 **What I did:** Wrote the first two POST requests myself and ran the suite. Asked why `raw` is used, found the escaped body string hard to read and asked for a better way, and approved the body-file design. Ran the suite after generation: 49 requests, 84 assertions, 0 failed. (The AI's early estimate of about 93 assertions was wrong; 84 is the correct count.)
 
+### 20. Round-trip check for accepted POSTs
+
+**Prompts:**
+> yes, give me the first piece [expectStored helper]
+> I think there is already a helper [the existing expectStatus and expectError]
+> I am confused, give me what this helper should look like
+> What does this mean? returns the stored position
+> Build succeeded, run the tests
+> yes, give me piece 2 [compare every stored field]
+
+**What the AI gave:** Moved the helper script out of `base.json` into a plain `src/helpers.js` (inlined by the build via `execFile`), then designed `expectStored` in two pieces: first a GET by id that checks the id, then a comparison of every field with rounding for latitude, longitude, speed and heading and an instant-based comparison for the timestamp. Found and fixed a file-name bug in the files it had generated (a minus sign was dropped from names like `latitude -90`). Ran the suite on request and, after I confirmed the first pieces worked, added the same one-line call to the other accepted POST requests.
+**What I did:** Typed the helper and the first uses myself, asked what was unclear (an existing helper, what a test label means), and ran the suite after each change. Results: 85 assertions with the id check, 87 with the two tricky cases (offset timestamp and 8-decimal latitude), 97 with all 13 accepted POST requests, 0 failed.
+
 ---
 
 ## What I reviewed or corrected myself
