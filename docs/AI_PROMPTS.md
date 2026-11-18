@@ -251,6 +251,15 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** A check of the three test folders that found more than the `bodies/` difference (mixed array style, one file indented with 4 spaces, mixed line endings), with a recommendation: write the layout rule down, do a one-time formatting pass and add `.editorconfig` and `.gitattributes`. It ran the pass, proved the merged collection was byte-for-byte identical afterwards and that the suite still passed (67 requests, 107 assertions, 0 failed).
 **What I did:** Spotted the inconsistency myself and asked for it to be fixed before building more, then approved all three changes.
 
+### 23. OData folder
+
+**Prompts:**
+> yes, give me the first piece [first OData request and the expectIds helper]
+> Build succeeded, run the tests
+
+**What the AI gave:** The first OData request (filter by device, expecting the five seeded ids in order) and the `expectIds` helper for me to type. After it passed, it read the seed data, added the `expectCount` and `expectNoCount` helpers and generated the other 42 OData requests (devices, date ranges with inclusive boundaries, string functions, ordering, `$top`, `$count`, and unsupported or malformed input), each asserting an exact list of ids. It explained which cases it left out on purpose and which assumptions the tests pin.
+**What I did:** Typed the first request and the `expectIds` helper myself and ran the suite (68 requests, 109 assertions, 0 failed). The final run with the whole folder gave 110 requests, 208 assertions, 0 failed.
+
 ---
 
 ## What I reviewed or corrected myself
