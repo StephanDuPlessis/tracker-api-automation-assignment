@@ -59,8 +59,29 @@ function buildHelpers() {
                 pm.expect(stored.speedKph, 'speedKph').to.equal(expected.speedKph);
                 pm.expect(stored.headingDeg, 'headingDeg').to.equal(expected.headingDeg);
             });
-        }
+        },
 
+        // The "value" array must contain exactly these ids, in exactly this order.
+        expectIds(expectedIds) {
+            pm.test(`value has ${expectedIds.length} item(s) in the expected order`, () => {
+                const ids = pm.response.json().value.map((item) => item.id);
+                pm.expect(ids).to.eql(expectedIds);
+            });
+        },
+
+        // "@odata.count" must be present and equal to this total (the number of ALL matching rows, not just the page).
+        expectCount(total) {
+            pm.test(`@odata.count is ${total}`, () => {
+                pm.expect(pm.response.json()['@odata.count']).to.equal(total);
+            });
+        },
+
+        // "@odata.count" must not be in the response at all (it is only returned when $count=true).
+        expectNoCount() {
+            pm.test('Response has no @odata.count', () => {
+                pm.expect(pm.response.json()).to.not.have.property('@odata.count');
+            });
+        }
     };
 }
 

@@ -1,0 +1,55 @@
+{
+  "name": "startswith ignores letter case",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10001-01',",
+          "    'pos-test-10002-01',",
+          "    'pos-test-10001-02',",
+          "    'pos-test-10001-03',",
+          "    'pos-test-10002-02',",
+          "    'pos-test-10001-04',",
+          "    'pos-test-10002-03',",
+          "    'pos-test-10001-05',",
+          "    'pos-test-10002-04'",
+          "]);",
+          "h.expectCount(9);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'test-d')&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "startswith(deviceId,'test-d')"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

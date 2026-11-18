@@ -1,0 +1,45 @@
+{
+  "name": "Order without a direction is ascending",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10002-01',",
+          "    'pos-test-10002-02',",
+          "    'pos-test-10002-03',",
+          "    'pos-test-10002-04'",
+          "]);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$orderby=occurredAt",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-D-10002'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt"
+        }
+      ]
+    }
+  },
+  "response": []
+}

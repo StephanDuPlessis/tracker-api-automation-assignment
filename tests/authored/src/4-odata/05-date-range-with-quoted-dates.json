@@ -1,0 +1,44 @@
+{
+  "name": "Date range with quoted dates",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10001-02',",
+          "    'pos-test-20001-01',",
+          "    'pos-test-10001-03'",
+          "]);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=occurredAt ge '2025-01-15T10:00:00Z' and occurredAt le '2025-01-15T12:00:00Z'&$orderby=occurredAt asc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "occurredAt ge '2025-01-15T10:00:00Z' and occurredAt le '2025-01-15T12:00:00Z'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        }
+      ]
+    }
+  },
+  "response": []
+}

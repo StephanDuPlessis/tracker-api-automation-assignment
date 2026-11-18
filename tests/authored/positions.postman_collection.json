@@ -85,8 +85,29 @@
           "                pm.expect(stored.speedKph, 'speedKph').to.equal(expected.speedKph);",
           "                pm.expect(stored.headingDeg, 'headingDeg').to.equal(expected.headingDeg);",
           "            });",
-          "        }",
+          "        },",
           "",
+          "        // The \"value\" array must contain exactly these ids, in exactly this order.",
+          "        expectIds(expectedIds) {",
+          "            pm.test(`value has ${expectedIds.length} item(s) in the expected order`, () => {",
+          "                const ids = pm.response.json().value.map((item) => item.id);",
+          "                pm.expect(ids).to.eql(expectedIds);",
+          "            });",
+          "        },",
+          "",
+          "        // \"@odata.count\" must be present and equal to this total (the number of ALL matching rows, not just the page).",
+          "        expectCount(total) {",
+          "            pm.test(`@odata.count is ${total}`, () => {",
+          "                pm.expect(pm.response.json()['@odata.count']).to.equal(total);",
+          "            });",
+          "        },",
+          "",
+          "        // \"@odata.count\" must not be in the response at all (it is only returned when $count=true).",
+          "        expectNoCount() {",
+          "            pm.test('Response has no @odata.count', () => {",
+          "                pm.expect(pm.response.json()).to.not.have.property('@odata.count');",
+          "            });",
+          "        }",
           "    };",
           "}",
           "",
@@ -2416,6 +2437,1847 @@
               "path": [
                 "positions",
                 "pos-test-10001-01"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4 OData queries",
+      "item": [
+        {
+          "name": "Filter by deviceId returns that device's rows in order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10001-05'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by deviceId with count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10002-04'",
+                  "]);",
+                  "h.expectCount(4);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10002'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by a deviceId with no rows returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-99999'&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-99999'"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date range includes both boundary rows",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-20001-01',",
+                  "    'pos-test-10001-03'",
+                  "]);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:00Z and occurredAt le 2025-01-15T12:00:00Z&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-15T10:00:00Z and occurredAt le 2025-01-15T12:00:00Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date range with quoted dates",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-20001-01',",
+                  "    'pos-test-10001-03'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge '2025-01-15T10:00:00Z' and occurredAt le '2025-01-15T12:00:00Z'&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge '2025-01-15T10:00:00Z' and occurredAt le '2025-01-15T12:00:00Z'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date range one second inside the boundaries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-20001-01'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:01Z and occurredAt le 2025-01-15T11:59:59Z&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-15T10:00:01Z and occurredAt le 2025-01-15T11:59:59Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Device and date range combined",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T10:00:00Z and occurredAt le 2025-01-15T12:00:00Z&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T10:00:00Z and occurredAt le 2025-01-15T12:00:00Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "A whole day",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-20001-02',",
+                  "    'pos-test-10001-05',",
+                  "    'pos-test-10002-04',",
+                  "    'pos-test-20001-03'",
+                  "]);",
+                  "h.expectCount(6);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-16T23:59:59Z&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-16T23:59:59Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Only an upper bound (le)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10002-01'",
+                  "]);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt le 2025-01-15T09:00:00Z&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt le 2025-01-15T09:00:00Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Range where ge is later than le returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-15T00:00:00Z&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-15T00:00:00Z"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith finds the TEST-D devices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10001-05',",
+                  "    'pos-test-10002-04'",
+                  "]);",
+                  "h.expectCount(9);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-D')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith finds the TEST-X device",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-20001-01',",
+                  "    'pos-test-20001-02',",
+                  "    'pos-test-20001-03'",
+                  "]);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-X')&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-X')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "contains finds one device by a part of its id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10002-04'",
+                  "]);",
+                  "h.expectCount(4);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=contains(deviceId,'-10002')&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "contains(deviceId,'-10002')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "contains treats the underscore as plain text",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=contains(deviceId,'D_10')&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "contains(deviceId,'D_10')"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith ignores letter case",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10001-05',",
+                  "    'pos-test-10002-04'",
+                  "]);",
+                  "h.expectCount(9);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'test-d')&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'test-d')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith combined with a date bound",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10001-02'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D') and occurredAt le 2025-01-15T10:00:00Z&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-D') and occurredAt le 2025-01-15T10:00:00Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Order descending",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-05',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-01'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Order without a direction is ascending",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10002-04'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$orderby=occurredAt",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10002'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=0 returns an empty list and no count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectNoCount();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$top=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$top",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=1 returns the first row",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$top=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$top",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=2 with descending order returns the two newest rows",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-05',",
+                  "    'pos-test-10001-04'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt desc&$top=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt desc"
+                },
+                {
+                  "key": "$top",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top larger than the data returns every matching row",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10002-01',",
+                  "    'pos-test-10002-02',",
+                  "    'pos-test-10002-03',",
+                  "    'pos-test-10002-04'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$orderby=occurredAt asc&$top=100",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10002'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$top",
+                  "value": "100"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=1000 is accepted (upper boundary)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10001-05'",
+                  "]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$top=1000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$top",
+                  "value": "1000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=1001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$top=1001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$top",
+                  "value": "1001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=-1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$top=-1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$top",
+                  "value": "-1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=abc returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$top=abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$top",
+                  "value": "abc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=1.5 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$top=1.5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$top",
+                  "value": "1.5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Without $count there is no @odata.count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10001-05'",
+                  "]);",
+                  "h.expectNoCount();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$count reports all matching rows even when $top limits the page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10001-02'",
+                  "]);",
+                  "h.expectCount(5);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$top=2&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$top",
+                  "value": "2"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$count=false returns no @odata.count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([",
+                  "    'pos-test-10001-01',",
+                  "    'pos-test-10001-02',",
+                  "    'pos-test-10001-03',",
+                  "    'pos-test-10001-04',",
+                  "    'pos-test-10001-05'",
+                  "]);",
+                  "h.expectNoCount();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$count=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$count=yes returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$count=yes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$count",
+                  "value": "yes"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported operator gt returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=speedKph gt 5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "speedKph gt 5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported operator ne returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId ne 'TEST-D-10001'",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId ne 'TEST-D-10001'"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported operator or returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' or deviceId eq 'TEST-D-10002'",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' or deviceId eq 'TEST-D-10002'"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unquoted text value returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq TEST-D-10001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq TEST-D-10001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing closing quote returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid date in a filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge not-a-date",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge not-a-date"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a time in a filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "The same filter twice returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and deviceId eq 'TEST-D-10002'",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' and deviceId eq 'TEST-D-10002'"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Empty filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported query option $skip returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$skip=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$skip",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported $orderby field returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$orderby=deviceId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$orderby",
+                  "value": "deviceId"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported $orderby direction returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$orderby=occurredAt sideways",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt sideways"
+                }
               ]
             }
           },

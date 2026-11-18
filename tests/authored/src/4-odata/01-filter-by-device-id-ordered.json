@@ -1,0 +1,36 @@
+{
+  "name": "Filter by deviceId returns that device's rows in order",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10001-01',",
+          "    'pos-test-10001-02',",
+          "    'pos-test-10001-03',",
+          "    'pos-test-10001-04',",
+          "    'pos-test-10001-05'",
+          "]);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc",
+      "host": ["{{baseUrl}}"],
+      "path": ["positions"],
+      "query": [
+        { "key": "$filter", "value": "deviceId eq 'TEST-D-10001'" },
+        { "key": "$orderby", "value": "occurredAt asc" }
+      ]
+    }
+  },
+  "response": []
+}

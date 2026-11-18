@@ -1,0 +1,52 @@
+{
+  "name": "A whole day",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10001-04',",
+          "    'pos-test-10002-03',",
+          "    'pos-test-20001-02',",
+          "    'pos-test-10001-05',",
+          "    'pos-test-10002-04',",
+          "    'pos-test-20001-03'",
+          "]);",
+          "h.expectCount(6);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-16T23:59:59Z&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-16T23:59:59Z"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

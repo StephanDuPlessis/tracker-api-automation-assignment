@@ -1,0 +1,42 @@
+{
+  "name": "Date range one second inside the boundaries",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-20001-01'",
+          "]);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:01Z and occurredAt le 2025-01-15T11:59:59Z&$orderby=occurredAt asc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "occurredAt ge 2025-01-15T10:00:01Z and occurredAt le 2025-01-15T11:59:59Z"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        }
+      ]
+    }
+  },
+  "response": []
+}
