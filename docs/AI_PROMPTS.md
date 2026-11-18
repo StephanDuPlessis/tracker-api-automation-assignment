@@ -270,6 +270,20 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** The first two data-integrity requests for me to write (a POST and a query that must find what was created). When the run failed, it read the output and found the cause (my body file was empty, so the POST had no body and everything after it failed), proposed a build check that fails with the file name, and after I pasted the code into the chat it added it to the build script. It then added two helpers (sorting and count-versus-items) and generated the other 12 requests: count versus `$top`, ordering that follows timestamps rather than creation order, a rejected duplicate and a rejected invalid position leaving no trace, and the seeded data staying untouched.
 **What I did:** Created the folder, the body file and the first two requests, and ran the suite. The first run failed because I had not saved the body file; I saved it and the run passed (113 requests, 213 assertions). The finished folder ran twice in a row to prove it can be re-run: 127 requests, 246 assertions, 0 failed both times.
 
+### 25. The run script: start and stop the API, reporters, exit code, one settings file
+
+**Prompts:**
+> yes, give me the first piece [start and stop the API from the script]
+> Build succeeded, run the tests
+> Where should I add piece 2? / I made the first change
+> Give me what the whole script should look like rather than piecing it bit by bit and an explanation I can use in my video and interview
+> Should we have a file with these values and settings so that it is changed in one place
+> Okay so what do I still need to do?
+> Remember where we are so I can start a new chat
+
+**What the AI gave:** The start and stop logic for the API (use a running one, otherwise build and start the built dll, always stop the one it started), then the reporters and exit code. It spotted that my edit had spaces after the commas in `--reporters cli, junit, htmlextra`, which PowerShell turns into separate arguments, and had me quote it. At my request it gave the complete script plus an explanation for the video and interview, and added two guards (a failed collection build stops the script; Newman gets the same base URL the script checked). It proposed a `.env.example` and `.env` for one settings file. It ran the finished script to check the exit code, reports and cleanup before rewriting the handoff.
+**What I did:** Typed the start and stop piece and the reporter change myself, ran the script both with and without my own API running, asked for the whole script instead of more pieces, and asked about one settings file and what was still left.
+
 ---
 
 ## What I reviewed or corrected myself
