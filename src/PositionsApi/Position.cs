@@ -14,7 +14,7 @@ public sealed record Position(
 
 public static class PositionRequest
 {
-    private static readonly Regex IsoTimestampWithTimeZone = new(
+    internal static readonly Regex IsoTimestampWithTimeZone = new(
         @"\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})\z",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
