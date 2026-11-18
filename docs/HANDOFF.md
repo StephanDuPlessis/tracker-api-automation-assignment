@@ -1,0 +1,43 @@
+# Handoff
+
+Shared status file for Claude Code and GitHub Copilot. Read it at the start of a session and update it at the end of every task. No dates or times. Git history is the real record; this file is the quick summary.
+
+## Rules for both agents
+
+- Follow `.github/copilot-instructions.md`.
+- One small task at a time. Do not start the next step unless asked.
+- Never edit `docs/BUILD_NOTES.md` unless asked. Suggest the entry instead.
+- Run `git status` first. If it disagrees with this file, trust git.
+
+## Current state
+
+- Done: SQL scripts (`db/01_schema.sql`, `02_seed.sql`, `99_cleanup.sql`), run and verified on LocalDB (database PositionsDb, 12 seeded positions: 5 / 4 / 3 per device).
+- Done: API step 1 in `src/PositionsApi` (API key auth, POST /positions, GET /positions/{id}), checked by hand: 201, 200, 401, 409, 400, 404. Timestamps serialise as `...56Z`.
+- Evidence of a validation gap is saved in `docs/evidence/` (before-fix output and truncation check).
+- Done: BUILD_NOTES has D16, A4 (rounding limitation), the validation issues and the AI usage row.
+- Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/validation-check.ps1` (written by the owner in pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
+- The validation script resets the database itself at the start (`99_cleanup.sql`, then `02_seed.sql`), so it can be re-run with no manual SQL. It leaves the seed rows plus the validation rows from cases 8 to 14 in the database; the next run's cleanup removes them.
+- Helper scripts: `scripts/start-api.ps1` starts the API (loads the key from the gitignored `scripts/set-env.local.ps1`). `scripts/set-env.local.ps1` sets `API_KEY` and moves to the repo root; run it with F5 in the ISE or dot-sourced.
+
+## In progress
+
+- Nothing.
+- `src/` and `scripts/` are not committed yet. The owner will commit them.
+
+## Next steps, in order
+
+1. Re-run the six basic calls (201, 200, 401, 409, 400, 404) against the current API. The database is already reset by the validation script; run `db\99_cleanup.sql` then `db\02_seed.sql` for a clean seed-only state.
+2. GET /positions with OData in its own class `ODataQuery.cs` (no OData library): `$filter` (deviceId eq, occurredAt ge/le, startswith, contains, joined only by `and`), `$orderby=occurredAt asc|desc`, `$top` (0 returns empty; negative, non-numeric or above 1000 returns 400), `$count=true`. Anything else returns 400. Parameterised SQL only.
+3. Postman collection in `tests/`, run script in `scripts/`, pipeline `azure-pipelines.yml`, README.md, SOLUTION.md.
+
+## Things to remember
+
+- When the owner asks for a script, give it in small pieces with a short "why" for each, so they can type it themselves and run it after each piece. Do not hand over a finished file.
+- Do not spawn multiple agents or workflows. Keep token usage low: read only the files the task needs, keep replies short.
+- The API listens on `http://localhost:5080` by default. The owner runs it in a normal terminal, never in the PowerShell ISE.
+- The owner runs scripts in the PowerShell ISE, which is Windows PowerShell 5.1. Do not use PowerShell 7 features such as `-SkipHttpErrorCheck`. Use `curl.exe` with a body file.
+- The API refuses to start without the `API_KEY` environment variable. Local dev key used in manual tests: set `$env:API_KEY` in the terminal that runs the API; the value is never committed.
+- Stop the running API before building, or the build fails on a file lock.
+- Send JSON bodies from a file or build them in PowerShell objects; quoting JSON on the `curl.exe` command line breaks it.
+- The POST response echoes the input; assert on GET responses for stored values.
+- `occurredAt` uses a UTC `Z` format; decimals are stored with 6 (lat/lon) and 2 (speed/heading) decimal places.
