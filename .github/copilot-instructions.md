@@ -67,6 +67,7 @@ Microsoft-hosted Ubuntu agent. Steps: start SQL Server, apply schema and seed, b
 - Run and verify what you build (`dotnet build`, `sqlcmd`, `newman run`) and report real output.
 - Flag anything in the brief that is ambiguous instead of silently guessing.
 - Do not commit secrets or generated reports (`tests/reports/` is gitignored).
+- Prompt log: every valid prompt the owner gives an AI tool (Copilot, Claude Code, Claude chat) that leads to real work on this repo must be added to `docs/AI_PROMPTS.md`. Valid means it changed, checked or decided something in the project. Skip chit-chat, tool-usage questions and exact duplicates (note a duplicate in one line instead). For each entry record the tool, the prompt (trim long ones with "[...]"), what the AI gave, what the owner did with it and the outcome. Never write that the owner did something the AI did. Never put secrets or personal details in the log. Add the entry in the same task, before finishing.
 
 ## Handoff
 At the start of a task read `docs/HANDOFF.md`, and at the end update it. Do not edit `docs/BUILD_NOTES.md` unless asked.

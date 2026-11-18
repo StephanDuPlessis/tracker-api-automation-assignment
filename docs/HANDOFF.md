@@ -17,9 +17,11 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 - API status: incomplete. Auth, POST /positions and GET /positions/{id} are done. GET /positions with OData is not built. `Program.cs` and `PositionRepository.cs` have not been code-reviewed.
 - Done: Node v26.13.1 and npm 11.20.0 installed. Newman 6.2.3 and newman-reporter-htmlextra 1.23.1 installed globally and `newman -v` works. Postman desktop is not installed yet (needed only to build the collection).
 - Done: BUILD_NOTES has D16, A4 (rounding limitation), the validation issues and the AI usage row.
-- Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/validation-check.ps1` (written by the owner in pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
+- Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/validation-check.ps1` (built by the owner in small pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
 - The validation script resets the database itself at the start (`99_cleanup.sql`, then `02_seed.sql`), so it can be re-run with no manual SQL. It leaves the seed rows plus the validation rows from cases 8 to 14 in the database; the next run's cleanup removes them.
 - Helper scripts: `scripts/start-api.ps1` starts the API (loads the key from the gitignored `scripts/set-env.local.ps1`). `scripts/set-env.local.ps1` sets `API_KEY` and moves to the repo root; run it with F5 in the ISE or dot-sourced.
+
+- Done: `docs/AI_PROMPTS.md` drafted from the Copilot, Claude Code and Claude chat exports (prompts up to the end of the validation work). Add later prompts (OData onwards) as they happen. `AI_CHAT_LOG.md` (Claude chat log) is referenced from it but is not in the repo yet.
 
 ## In progress
 
