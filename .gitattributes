@@ -1,0 +1,5 @@
+# Let git normalise line endings: stored as LF in the repository, converted for the machine on checkout.
+* text=auto
+
+# Shell scripts always keep LF, so they run on the Linux pipeline agent.
+*.sh text eol=lf

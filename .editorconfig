@@ -1,0 +1,20 @@
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Test suite sources and scripts: 2 spaces, Unix line endings.
+[*.{json,js,yml,yaml}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# Pipeline shell scripts must have Unix line endings to run on the Linux agent.
+[*.sh]
+end_of_line = lf
+
+# Markdown uses trailing spaces for line breaks in places, so do not trim them.
+[*.md]
+trim_trailing_whitespace = false
