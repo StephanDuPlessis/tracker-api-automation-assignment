@@ -359,6 +359,18 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 31. The bash run script for the Linux pipeline agent
+
+**Prompts:**
+> yes, start with run-tests.sh
+> [pasted results after each of the four pieces, including a run with a wrong key and a normal run]
+
+**What the AI gave:** The script `scripts/tests/run-tests.sh` in four pieces, mirroring `run-tests.ps1`: a `.env` loader with the same rules as `load-env.ps1` (skip comments and blank values, never overwrite a variable that is already set); the database reset with `sqlcmd` (Windows authentication, or SQL authentication when `DB_USER` is set); starting the API only if it is not running and always stopping the one it started with a `trap`; and the Newman run that ends with Newman's exit code. It spotted before I hit it that the default `DB_SERVER` and `DB_NAME` had to be exported or the API would ignore them. It explained the bash parts I had not used before (`set -euo pipefail`, `${VAR:-default}`, arrays for the `sqlcmd` options, `trap ... EXIT`, `|| newman_exit=$?`). After my runs it checked the one result I had not shown (the exit code for a failing run, which gave 1), read the finished script, and updated `docs/HANDOFF.md`. It said which parts are not verified yet: `sqlcmd` on the Linux agent's PATH, the SQL authentication branch against a real login, and the file mode on Linux.
+**What I did:** Typed each piece, ran it in Git Bash after each piece, and sent the results. The final checks were a failing run (a wrong key, 233 failed assertions, exit code 1) and a passing run (311 assertions, 0 failed, exit code 0, the API stopped, and the JUnit and HTML reports and the API log written to `tests/reports`).
+**Outcome:** One command now runs the suite in bash, ready for the pipeline step, though it has only been run on Windows so far.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
