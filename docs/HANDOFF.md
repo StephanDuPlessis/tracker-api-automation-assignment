@@ -22,21 +22,20 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ## In progress
 
-- Uncommitted: the completed export collection, 28 new source files under `tests/authored/src/` (plus the rebuilt `tests/authored/positions.postman_collection.json`), and doc updates (this file, `docs/BUILD_NOTES.md` D18, `docs/AI_PROMPTS.md` entries 26 to 28). `run-tests.ps1` is already committed.
-- Under discussion, not started: one settings file. Plan: a committed `.env.example` (BASE_URL, API_KEY, DB_SERVER, DB_NAME, optional DB_USER and DB_PASSWORD), a gitignored `.env`, a small loader in the scripts that sets each value only when the variable is not already set (so pipeline variables win), update `start-api.ps1` and `validation-check.ps1` to use it, then retire `scripts/set-env.local.ps1`. Decided (D18 in BUILD_NOTES): keep `DB_CONNECTION_STRING` as an optional override that only the API reads (used as is when set); otherwise the API builds it from `DB_SERVER`, `DB_NAME` and optional `DB_USER`/`DB_PASSWORD` (Windows auth when no user). The scripts use the four variables and ignore the override. Leave it blank in `.env.example` with a one-line comment. Not implemented yet.
-- Local-only (gitignored): `scripts/set-env.local.ps1` (holds the API key and moves to the repo root), `docs/CODE_NOTES.md` and the `docs/notes/` folder. The notes are the owner's private study notes for the video and interview: never commit them and never reference them from committed docs.
+- Uncommitted: the settings-file work (`.env.example`, `scripts/load-env.ps1`, changes to `scripts/start-api.ps1`, `scripts/tests/run-tests.ps1`, `scripts/tests/validation-check.ps1` and `src/PositionsApi/Program.cs`) and the doc updates for it (this file, `docs/AI_PROMPTS.md` entry 29). Everything else is committed and pushed.
+- Done and verified, not yet committed: one settings file. `.env.example` (committed template) lists BASE_URL, API_KEY, DB_SERVER, DB_NAME, DB_USER, DB_PASSWORD and an optional DB_CONNECTION_STRING; `.env` is the gitignored copy with the real values. `scripts/load-env.ps1` (`Import-DotEnv`) reads `.env`, skips comments and blank values, and never overwrites a variable that is already set, so pipeline variables win. `run-tests.ps1`, `start-api.ps1` and `validation-check.ps1` call it. `Program.cs` uses `DB_CONNECTION_STRING` as is when set, otherwise builds the connection string from DB_SERVER, DB_NAME and, when DB_USER is set, SQL authentication (Windows authentication otherwise), with the old LocalDB values as defaults (D18). Verified: `run-tests.ps1` exit code 0, 155 requests, 311 assertions, 0 failed, from a fresh terminal with `scripts/set-env.local.ps1` deleted; with `DB_NAME=OtherDb` the API returns 500, so the setting is really used. `run-tests.ps1` still hard-codes Windows authentication for the SQL reset (next step 2). The `.gitignore` rule `scripts/*.local.ps1` stays as protection for any future local script.
+- Local-only (gitignored): `.env` (holds the real API key), `docs/CODE_NOTES.md` and the `docs/notes/` folder. The notes are the owner's private study notes for the video and interview: never commit them and never reference them from committed docs.
 
 ## Next steps, in order
 
-1. Settings in one place (see In progress; the override question is decided).
-1b. `scripts/tests/run-tests-2.ps1`: runs the export collection with the same reset, API start, Newman and reporters, sharing the common steps with `run-tests.ps1` (best done after the settings file). Then a short comparison of the two options (size, duplication, diff readability, build step) for SOLUTION.md and the video.
-3. SQL authentication in the reset step (`DB_USER` and `DB_PASSWORD`, `-U` and `-P` when set, Windows auth otherwise) and read `API_KEY` from the environment when no local file exists (the pipeline agent has none).
-4. `scripts/tests/run-tests.sh`, the bash equivalent for the Linux agent (same five steps; LF line endings are enforced by `.gitattributes`).
-5. Optional `docker-compose.yml` (SQL Server container).
-6. `azure-pipelines.yml`: Microsoft-hosted Ubuntu agent, SQL Server service container, apply schema and seed, build and start the API, install Newman 6.2.3 and htmlextra 1.23.1 pinned, run the suite, cleanup under `condition: always()`, `PublishTestResults@2` for `tests/reports/newman-junit.xml`, `PublishPipelineArtifact@1` for the HTML report, fail on test failures. It cannot be run from this machine; verify the YAML syntax and run its steps locally.
-7. `README.md` (how to run locally, the two suites, the layout rule), `SOLUTION.md` (design, trade-offs, assumptions, AI usage, "decided not to do").
-8. BUILD_NOTES entries, when asked.
-9. Pre-submission re-check (below), then the Loom video and sharing the repository.
+1. `scripts/tests/run-tests-2.ps1`: runs the export collection with the same reset, API start, Newman and reporters, sharing the common steps with `run-tests.ps1` (best done after the settings file). Then a short comparison of the two options (size, duplication, diff readability, build step) for SOLUTION.md and the video.
+2. SQL authentication in the reset step of `run-tests.ps1` (`DB_USER` and `DB_PASSWORD`, `-U` and `-P` when set, Windows authentication otherwise). The API side is already done. The pipeline agent has no `.env`, so its settings come from pipeline variables.
+3. `scripts/tests/run-tests.sh`, the bash equivalent for the Linux agent (same five steps; LF line endings are enforced by `.gitattributes`).
+4. Optional `docker-compose.yml` (SQL Server container).
+5. `azure-pipelines.yml`: Microsoft-hosted Ubuntu agent, SQL Server service container, apply schema and seed, build and start the API, install Newman 6.2.3 and htmlextra 1.23.1 pinned, run the suite, cleanup under `condition: always()`, `PublishTestResults@2` for `tests/reports/newman-junit.xml`, `PublishPipelineArtifact@1` for the HTML report, fail on test failures. It cannot be run from this machine; verify the YAML syntax and run its steps locally.
+6. `README.md` (how to run locally, the two suites, the layout rule), `SOLUTION.md` (design, trade-offs, assumptions, AI usage, "decided not to do").
+7. BUILD_NOTES entries, when asked.
+8. Pre-submission re-check (below), then the Loom video and sharing the repository.
 
 ## Open items before submission
 

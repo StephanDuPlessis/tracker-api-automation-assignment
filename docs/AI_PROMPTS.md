@@ -330,6 +330,23 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 29. One settings file for the scripts and the API
+
+**Prompts:**
+> yes, give me the first piece [the `.env.example` file]
+> why do we call it .env.example?
+> do the values require '' or "" ?
+> yes, give me piece 2 [the loader]
+> Check if my run tests is correct (the comments as well)
+> I deleted line 5, give me piece 3b [start-api.ps1 and validation-check.ps1 use the loader]
+> [pasted screenshots of the runs, including the failed run with a leftover `DB_NAME`, the API start and the optional `OtherDb` check]
+
+**What the AI gave:** The contents of `.env.example` and why the `.example` name is used (the `.gitignore` already ignores `.env` and keeps `.env.example`). A loader function in `scripts/load-env.ps1` in small pieces (find the names, then set the values, skipping blank values and variables that are already set). The edits to `run-tests.ps1`, `start-api.ps1` and `validation-check.ps1`. A change to `Program.cs` so the API builds its connection string from the separate DB settings when `DB_CONNECTION_STRING` is not set (decision D18). It spotted the stale comment I had left on line 5 of `run-tests.ps1`, explained that the failed run was my own leftover `DB_NAME=OtherDb` being respected, and ran the `OtherDb` check itself because my attempt had a placeholder key and no API running. It checked that `.env` was ignored by git and that the key in it matched the old local script, without printing the key.
+**What I did:** Created `.env.example` and `.env`, typed the loader, the script changes and the `Program.cs` edit, ran `run-tests.ps1` from fresh terminals (311 assertions, 0 failed, exit code 0, also after I deleted `scripts/set-env.local.ps1`), started the API with the new script, and sent my results back each time. I deleted the line 5 comment myself and deleted the old settings script.
+**Outcome:** The API key and database settings now come from `.env` (or from real environment variables, which win), and the old local settings script is gone.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
