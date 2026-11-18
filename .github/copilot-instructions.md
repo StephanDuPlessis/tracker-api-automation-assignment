@@ -67,3 +67,6 @@ Microsoft-hosted Ubuntu agent. Steps: start SQL Server, apply schema and seed, b
 - Run and verify what you build (`dotnet build`, `sqlcmd`, `newman run`) and report real output.
 - Flag anything in the brief that is ambiguous instead of silently guessing.
 - Do not commit secrets or generated reports (`tests/reports/` is gitignored).
+
+## Handoff
+At the start of a task read `docs/HANDOFF.md`, and at the end update it. Do not edit `docs/BUILD_NOTES.md` unless asked.
