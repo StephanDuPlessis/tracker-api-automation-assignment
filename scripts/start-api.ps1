@@ -1,4 +1,4 @@
-clear
+Clear-Host
 # Starts the Positions API for local testing.
 # The dev API key comes from scripts/set-env.local.ps1, which is gitignored.
 $envScript = Join-Path $PSScriptRoot 'set-env.local.ps1'
