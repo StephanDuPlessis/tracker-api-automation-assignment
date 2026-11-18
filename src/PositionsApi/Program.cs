@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +12,44 @@ if (string.IsNullOrWhiteSpace(apiKey))
     throw new InvalidOperationException("Set the API_KEY environment variable before starting the API.");
 }
 
+// DB_CONNECTION_STRING wins if it is set. Otherwise the string is built from the separate DB settings.
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 if (connectionString is null)
 {
-    connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=PositionsDb;Integrated Security=True;TrustServerCertificate=True;";
+    var dbUser = EnvOrDefault("DB_USER", "");
+
+    // SqlConnectionStringBuilder does the quoting, so a password with ; or = in it cannot break the string.
+    var sqlBuilder = new SqlConnectionStringBuilder
+    {
+        DataSource = EnvOrDefault("DB_SERVER", "(localdb)\\MSSQLLocalDB"),
+        InitialCatalog = EnvOrDefault("DB_NAME", "PositionsDb"),
+        TrustServerCertificate = true
+    };
+
+    if (dbUser == "")
+    {
+        sqlBuilder.IntegratedSecurity = true;   // Windows authentication (LocalDB)
+    }
+    else
+    {
+        sqlBuilder.UserID = dbUser;             // SQL authentication (the pipeline's container)
+        sqlBuilder.Password = EnvOrDefault("DB_PASSWORD", "");
+    }
+
+    connectionString = sqlBuilder.ConnectionString;
 }
 else if (string.IsNullOrWhiteSpace(connectionString))
 {
     throw new InvalidOperationException("DB_CONNECTION_STRING cannot be empty.");
 }
+
+// The variable's value, or the fallback when it is missing or blank.
+static string EnvOrDefault(string name, string fallback)
+{
+    var value = Environment.GetEnvironmentVariable(name);
+    return string.IsNullOrWhiteSpace(value) ? fallback : value;
+}
+
 
 var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS");
 builder.WebHost.UseUrls(string.IsNullOrWhiteSpace(urls) ? "http://localhost:5080" : urls);
