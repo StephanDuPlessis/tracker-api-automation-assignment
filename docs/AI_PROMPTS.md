@@ -286,6 +286,17 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 26. Settings file: keep `DB_CONNECTION_STRING` as an override?
+
+**Prompts:**
+> What do you recommend and why? [whether DB_CONNECTION_STRING stays as an optional override]
+> Agreed, put that in our documents and notes
+
+**What the AI gave:** A recommendation to keep `DB_CONNECTION_STRING` as an optional override, with the four DB variables as the default. Reasons: the shared instructions already name it, .NET reads a connection string directly, and it covers odd options such as a custom port or `TrustServerCertificate`. `sqlcmd` cannot use a connection string, so the scripts need the separate variables anyway. It also pointed out the risk that both are set and disagree, and suggested that only the API reads the override. It then recorded the decision in HANDOFF.md, BUILD_NOTES.md (D18) and this log.
+**What I did:** Asked for the recommendation, agreed with it and asked for it to be written into the documents and notes. No code changed yet.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).

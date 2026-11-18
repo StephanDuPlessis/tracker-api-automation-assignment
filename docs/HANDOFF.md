@@ -22,14 +22,13 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ## In progress
 
-- Uncommitted: `scripts/tests/run-tests.ps1` (start and stop the API, reporters, exit code) and this file. Everything else is committed and pushed.
-- Under discussion, not started: one settings file. Plan: a committed `.env.example` (BASE_URL, API_KEY, DB_SERVER, DB_NAME, optional DB_USER and DB_PASSWORD), a gitignored `.env`, a small loader in the scripts that sets each value only when the variable is not already set (so pipeline variables win), update `start-api.ps1` and `validation-check.ps1` to use it, then retire `scripts/set-env.local.ps1`. Open question: keep `DB_CONNECTION_STRING` for the API as an optional override and build it from the four DB variables otherwise.
+- Uncommitted: doc updates only (this file, `docs/BUILD_NOTES.md` D18, `docs/AI_PROMPTS.md` entry 26). `run-tests.ps1` is already committed.
+- Under discussion, not started: one settings file. Plan: a committed `.env.example` (BASE_URL, API_KEY, DB_SERVER, DB_NAME, optional DB_USER and DB_PASSWORD), a gitignored `.env`, a small loader in the scripts that sets each value only when the variable is not already set (so pipeline variables win), update `start-api.ps1` and `validation-check.ps1` to use it, then retire `scripts/set-env.local.ps1`. Decided (D18 in BUILD_NOTES): keep `DB_CONNECTION_STRING` as an optional override that only the API reads (used as is when set); otherwise the API builds it from `DB_SERVER`, `DB_NAME` and optional `DB_USER`/`DB_PASSWORD` (Windows auth when no user). The scripts use the four variables and ignore the override. Leave it blank in `.env.example` with a one-line comment. Not implemented yet.
 - Local-only (gitignored): `scripts/set-env.local.ps1` (holds the API key and moves to the repo root), `docs/CODE_NOTES.md` and the `docs/notes/` folder. The notes are the owner's private study notes for the video and interview: never commit them and never reference them from committed docs.
 
 ## Next steps, in order
 
-1. Commit and push `run-tests.ps1` (suggested message: `Start and stop the API, write reports and return Newman's exit code in the run script`).
-2. Settings in one place (see In progress).
+1. Settings in one place (see In progress; the override question is decided).
 3. SQL authentication in the reset step (`DB_USER` and `DB_PASSWORD`, `-U` and `-P` when set, Windows auth otherwise) and read `API_KEY` from the environment when no local file exists (the pipeline agent has none).
 4. `scripts/tests/run-tests.sh`, the bash equivalent for the Linux agent (same five steps; LF line endings are enforced by `.gitattributes`).
 5. Optional `docker-compose.yml` (SQL Server container).
