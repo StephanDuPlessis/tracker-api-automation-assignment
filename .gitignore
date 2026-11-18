@@ -166,6 +166,9 @@ TestResults/
 # Test run reports (Newman JUnit and HTML)
 tests/reports/
 
+# Local-only scripts that hold secrets such as the dev API key
+scripts/*.local.ps1
+
 # LocalDB / SQL Server data files, if created inside the repo
 *.mdf
 *.ldf
