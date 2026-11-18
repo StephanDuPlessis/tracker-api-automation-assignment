@@ -1,0 +1,52 @@
+// Shared helpers for every test script in this collection.
+// Postman scripts cannot import each other, so the code lives in one function,
+// its text is saved in a collection variable, and each test script loads it with eval().
+function buildHelpers() {
+    // The API stores latitude and longitude with 6 decimals and speed and heading with 2.
+    const round = (value, places) => Number(value.toFixed(places));
+
+    return {
+
+        // The response must have exactly this HTTP status code.
+        expectStatus(code) {
+            pm.test(`Status is ${code}`, () => {
+                pm.response.to.have.status(code);
+            });
+        },
+
+        // Every error response must be JSON of the form { "error": "some text" }.
+        expectError() {
+            pm.test('Body is { "error": "..." }', () => {
+                const body = pm.response.json();
+                pm.expect(body).to.have.property('error');
+                pm.expect(body.error).to.be.a('string').and.not.empty;
+            });
+        },
+
+        // Reads the position back with GET /positions/{id} and checks what was stored.
+        expectStored(sent) {
+            pm.sendRequest({
+                url: `${pm.variables.get('baseUrl')}/positions/${encodeURIComponent(sent.id)}`,
+                method: 'GET',
+                header: { 'X-Api-Key': pm.variables.get('apiKey') }
+            }, (error, response) => {
+                pm.test('GET by id returns the stored position', () => {
+                    pm.expect(error, 'request error').to.equal(null);
+                    pm.expect(response.code, 'status').to.equal(200);
+
+                    const stored = response.json();
+                    pm.expect(stored.id, 'id').to.equal(sent.id);
+                    pm.expect(stored.deviceId, 'deviceId').to.equal(sent.deviceId);
+                    pm.expect(new Date(stored.occurredAt).getTime(), 'occurredAt').to.equal(new Date(sent.occurredAt).getTime());
+                    pm.expect(stored.latitude, 'latitude').to.equal(round(sent.latitude, 6));
+                    pm.expect(stored.longitude, 'longitude').to.equal(round(sent.longitude, 6));
+                    pm.expect(stored.speedKph, 'speedKph').to.equal(round(sent.speedKph, 2));
+                    pm.expect(stored.headingDeg, 'headingDeg').to.equal(round(sent.headingDeg, 2));
+
+                });
+            });
+        }
+    };
+}
+
+pm.collectionVariables.set('helpers', buildHelpers.toString());

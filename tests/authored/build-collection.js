@@ -7,6 +7,15 @@ const srcDir = path.join(__dirname, 'src');
 // Start from the base: name, auth setting, helper script. It has no requests yet.
 const collection = readJson(path.join(srcDir, 'base.json'));
 
+// A collection-level script can live in a plain .js file (execFile): load its lines into the script.
+for (const event of collection.event || []) {
+    if (event.script && event.script.execFile) {
+        const code = fs.readFileSync(path.join(srcDir, event.script.execFile), 'utf8');
+        event.script.exec = code.trimEnd().split(/\r?\n/);
+        delete event.script.execFile;
+    }
+}
+
 // Each numbered folder in src/ (1-auth, 2-post, ...) becomes one Postman folder.
 // Inside it, _folder.json holds the folder name and every numbered .json file is one request.
 const folderNames = fs.readdirSync(srcDir, { withFileTypes: true })

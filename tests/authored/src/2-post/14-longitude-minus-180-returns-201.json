@@ -1,5 +1,5 @@
 {
-  "name": "speedKph -10 returns 400",
+  "name": "Longitude -180 returns 201",
   "event": [
     {
       "listen": "test",
@@ -7,8 +7,8 @@
         "type": "text/javascript",
         "exec": [
           "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
-          "h.expectStatus(400);",
-          "h.expectError();"
+          "h.expectStatus(201);",
+          "h.expectStored(JSON.parse(pm.request.body.raw));"
         ]
       }
     }
@@ -23,7 +23,7 @@
     ],
     "body": {
       "mode": "raw",
-      "rawFile": "bodies/34-speedkph-10-returns-400.json",
+      "rawFile": "bodies/14-longitude-minus-180-returns-201.json",
       "options": {
         "raw": {
           "language": "json"

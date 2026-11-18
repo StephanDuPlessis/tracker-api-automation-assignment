@@ -1,5 +1,5 @@
 {
-  "name": "Latitude -90.000001 returns 400",
+  "name": "speedKph -10 returns 400",
   "event": [
     {
       "listen": "test",
@@ -23,7 +23,7 @@
     ],
     "body": {
       "mode": "raw",
-      "rawFile": "bodies/12-latitude-90-000001-returns-400.json",
+      "rawFile": "bodies/34-speedkph-minus-10-returns-400.json",
       "options": {
         "raw": {
           "language": "json"

@@ -1,5 +1,5 @@
 {
-  "name": "Latitude -90 returns 201",
+  "name": "Latitude -90.000001 returns 400",
   "event": [
     {
       "listen": "test",
@@ -7,7 +7,8 @@
         "type": "text/javascript",
         "exec": [
           "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
-          "h.expectStatus(201);"
+          "h.expectStatus(400);",
+          "h.expectError();"
         ]
       }
     }
@@ -22,7 +23,7 @@
     ],
     "body": {
       "mode": "raw",
-      "rawFile": "bodies/10-latitude-90-returns-201.json",
+      "rawFile": "bodies/12-latitude-minus-90-000001-returns-400.json",
       "options": {
         "raw": {
           "language": "json"

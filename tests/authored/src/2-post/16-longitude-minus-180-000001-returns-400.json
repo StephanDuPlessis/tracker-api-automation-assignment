@@ -1,5 +1,5 @@
 {
-  "name": "Longitude -180 returns 201",
+  "name": "Longitude -180.000001 returns 400",
   "event": [
     {
       "listen": "test",
@@ -7,7 +7,8 @@
         "type": "text/javascript",
         "exec": [
           "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
-          "h.expectStatus(201);"
+          "h.expectStatus(400);",
+          "h.expectError();"
         ]
       }
     }
@@ -22,7 +23,7 @@
     ],
     "body": {
       "mode": "raw",
-      "rawFile": "bodies/14-longitude-180-returns-201.json",
+      "rawFile": "bodies/16-longitude-minus-180-000001-returns-400.json",
       "options": {
         "raw": {
           "language": "json"
