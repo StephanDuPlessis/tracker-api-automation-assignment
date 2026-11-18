@@ -47,6 +47,7 @@ app.Use(async (context, next) =>
 
 app.MapPost("/positions", CreatePositionAsync);
 app.MapGet("/positions/{id}", GetPositionAsync);
+app.MapGet("/positions", QueryPositionsAsync);
 
 app.Run();
 
@@ -93,4 +94,26 @@ static async Task<IResult> GetPositionAsync(
 {
     var position = await repository.GetByIdAsync(id, cancellationToken);
     return position is null ? Results.NotFound() : Results.Ok(position);
+}
+
+static async Task<IResult> QueryPositionsAsync(
+    HttpRequest request,
+    PositionRepository repository,
+    CancellationToken cancellationToken)
+{
+    if (!ODataParser.TryParse(request.Query, out var query, out var error))
+    {
+        return Results.BadRequest(new { error });
+    }
+
+    var page = await repository.QueryAsync(query!, cancellationToken);
+
+    // Shape from the brief: { "value": [...], "@odata.count": N }, with the count only when asked for.
+    var response = new Dictionary<string, object> { ["value"] = page.Items };
+    if (page.TotalCount is not null)
+    {
+        response["@odata.count"] = page.TotalCount.Value;
+    }
+
+    return Results.Ok(response);
 }

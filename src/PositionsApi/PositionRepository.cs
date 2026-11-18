@@ -33,6 +33,52 @@ public sealed class PositionRepository(string connectionString)
             reader.GetDecimal(6));
     }
 
+    public async Task<PositionPage> QueryAsync(ODataQuery query, CancellationToken cancellationToken)
+    {
+        await using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync(cancellationToken);
+
+        // Query 1: the items. Always sorted, so $top returns the same rows every time.
+        await using var itemsCommand = connection.CreateCommand();
+        var where = BuildWhere(query, itemsCommand);
+        var top = query.Top is null ? "" : "TOP (@Top) ";
+        var direction = query.OrderDescending ? "DESC" : "ASC";
+
+        itemsCommand.CommandText =
+            $"""
+            SELECT {top}Id, DeviceId, OccurredAt, Latitude, Longitude, SpeedKph, HeadingDeg
+            FROM dbo.Positions
+            {where}
+            ORDER BY OccurredAt {direction}, Id ASC;
+            """;
+
+        if (query.Top is not null)
+        {
+            itemsCommand.Parameters.Add("@Top", SqlDbType.Int).Value = query.Top.Value;
+        }
+
+        var items = new List<Position>();
+        await using (var reader = await itemsCommand.ExecuteReaderAsync(cancellationToken))
+        {
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                items.Add(ReadPosition(reader));
+            }
+        }
+
+        // Query 2 (only when $count=true): how many rows match the filter, ignoring $top.
+        int? totalCount = null;
+        if (query.IncludeCount)
+        {
+            await using var countCommand = connection.CreateCommand();
+            var countWhere = BuildWhere(query, countCommand);
+            countCommand.CommandText = $"SELECT COUNT(*) FROM dbo.Positions {countWhere};";
+            totalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync(cancellationToken));
+        }
+
+        return new PositionPage(items, totalCount);
+    }
+
     public async Task<bool> TryInsertAsync(Position position, CancellationToken cancellationToken)
     {
         await using var connection = new SqlConnection(connectionString);
@@ -104,4 +150,64 @@ public sealed class PositionRepository(string connectionString)
         parameter.Scale = scale;
         parameter.Value = value;
     }
+
+    // Builds the WHERE clause from the parsed query and adds one parameter per value.
+    // Only fixed text goes into the SQL string; every value travels as a parameter.
+    private static string BuildWhere(ODataQuery query, SqlCommand command)
+    {
+        var conditions = new List<string>();
+
+        if (query.DeviceIdEquals is not null)
+        {
+            conditions.Add("DeviceId = @DeviceIdEquals");
+            command.Parameters.Add("@DeviceIdEquals", SqlDbType.NVarChar).Value = query.DeviceIdEquals;
+        }
+
+        if (query.DeviceIdStartsWith is not null)
+        {
+            conditions.Add(@"DeviceId LIKE @DeviceIdStartsWith ESCAPE '\'");
+            command.Parameters.Add("@DeviceIdStartsWith", SqlDbType.NVarChar).Value =
+                EscapeLike(query.DeviceIdStartsWith) + "%";
+        }
+
+        if (query.DeviceIdContains is not null)
+        {
+            conditions.Add(@"DeviceId LIKE @DeviceIdContains ESCAPE '\'");
+            command.Parameters.Add("@DeviceIdContains", SqlDbType.NVarChar).Value =
+                "%" + EscapeLike(query.DeviceIdContains) + "%";
+        }
+
+        if (query.OccurredFrom is not null)
+        {
+            conditions.Add("OccurredAt >= @OccurredFrom");
+            command.Parameters.Add("@OccurredFrom", SqlDbType.DateTimeOffset).Value = query.OccurredFrom.Value;
+        }
+
+        if (query.OccurredTo is not null)
+        {
+            conditions.Add("OccurredAt <= @OccurredTo");
+            command.Parameters.Add("@OccurredTo", SqlDbType.DateTimeOffset).Value = query.OccurredTo.Value;
+        }
+
+        return conditions.Count == 0 ? "" : "WHERE " + string.Join(" AND ", conditions);
+    }
+
+    // Turns the current row into a Position. The column order must match the SELECT list.
+    private static Position ReadPosition(SqlDataReader reader) => new(
+        reader.GetString(0),
+        reader.GetString(1),
+        reader.GetFieldValue<DateTimeOffset>(2),
+        reader.GetDecimal(3),
+        reader.GetDecimal(4),
+        reader.GetDecimal(5),
+        reader.GetDecimal(6));
+
+
+    // In LIKE, % and _ (and [) are wildcards. Put a backslash in front of them so they match as plain text.
+    private static string EscapeLike(string value) =>
+        value.Replace(@"\", @"\\").Replace("%", @"\%").Replace("_", @"\_").Replace("[", @"\[");
+
 }
+
+// What a query returns: the page of items, plus the total only when $count=true was asked for.
+public sealed record PositionPage(IReadOnlyList<Position> Items, int? TotalCount);
