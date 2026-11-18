@@ -347,6 +347,18 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 30. SQL authentication in the reset step of the run script
+
+**Prompts:**
+> yes, start with the SQL authentication step
+> [pasted screenshots of the normal run and of the run with a fake `DB_USER` and `DB_PASSWORD`]
+
+**What the AI gave:** The replacement for the two `sqlcmd` calls in `scripts/tests/run-tests.ps1`: Windows authentication (`-E`) when `DB_USER` is not set, SQL authentication (`-U`, with the password passed through the `SQLCMDPASSWORD` variable so it is not on the command line, and `-C` for the container's self-signed certificate) when it is. It gave two checks: a normal run, and a run with a fake login to prove the SQL branch is taken. It read the edited script afterwards to check the comments and the code, and updated `docs/HANDOFF.md`. It said plainly that the SQL branch against a real SQL login is not verified yet, because LocalDB normally allows only Windows authentication, and that the first real test will be the pipeline's SQL Server container.
+**What I did:** Made the change in `run-tests.ps1`, ran both checks and sent the results. The normal run gave exit code 0 with 311 assertions and 0 failed; the fake login gave `Login failed for user 'nobody'` and `Cleanup failed. Is the database reachable?`, then I removed the test variables.
+**Outcome:** The reset step supports both authentication modes. The SQL login path still needs a real test in the pipeline.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).

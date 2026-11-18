@@ -15,10 +15,20 @@ $baseUrl = if ($env:BASE_URL) { $env:BASE_URL } else { 'http://localhost:5080' }
 $sqlServer = if ($env:DB_SERVER) { $env:DB_SERVER } else { '(localdb)\MSSQLLocalDB' }
 $database = if ($env:DB_NAME) { $env:DB_NAME }   else { 'PositionsDb' }
 
-sqlcmd -S $sqlServer -d $database -E -i db\99_cleanup.sql
+# Windows authentication when there is no DB_USER (LocalDB). SQL authentication when there is one
+# (the pipeline's SQL Server container). -C trusts the container's self-signed certificate.
+if ($env:DB_USER) {
+    $env:SQLCMDPASSWORD = $env:DB_PASSWORD   # sqlcmd reads the password from here, so it is not on the command line
+    $sqlAuth = @('-U', $env:DB_USER, '-C')
+}
+else {
+    $sqlAuth = @('-E')
+}
+
+sqlcmd -S $sqlServer -d $database @sqlAuth -i db\99_cleanup.sql
 if ($LASTEXITCODE -ne 0) { throw 'Cleanup failed. Is the database reachable?' }
 
-sqlcmd -S $sqlServer -d $database -E -i db\02_seed.sql
+sqlcmd -S $sqlServer -d $database @sqlAuth -i db\02_seed.sql
 if ($LASTEXITCODE -ne 0) { throw 'Seed failed.' }
 
 # --- 2. Make sure the API is running ------------------------------------------------------
