@@ -247,19 +247,3726 @@
     },
     {
       "name": "2 POST positions",
-      "item": []
+      "item": [
+        {
+          "name": "Valid position returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-01\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing id returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing deviceId returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing occurredAt returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing latitude returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing longitude returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing speedKph returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing headingDeg returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude 90 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-02\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":90,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude -90 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-03\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":-90,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude 90.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":90.000001,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Latitude -90.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":-90.000001,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude 180 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-04\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":180,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude -180 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-05\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":-180,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude 180.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":180.000001,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Longitude -180.000001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":-180.000001,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp with an offset returns 201 and is stored in UTC",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored({ occurredAt: '2025-02-01T10:00:00Z' });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-06\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T12:00:00+02:00\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp that is not a date returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"not-a-date\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Timestamp without a timezone returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a time returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Impossible date returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-30T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty timestamp returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "id as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":12345,\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":40001,\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "occurredAt as a number returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":1738404000,\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "latitude as a string returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":\"10.5\",\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "longitude as a string returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":\"20.5\",\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph as a string returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":\"fast\",\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg as a string returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":\"north\"}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "latitude null returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":null,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "longitude as a boolean returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":true,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "id of 100 characters returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "id of 101 characters returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId of 50 characters returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-07\",\"deviceId\":\"TEST-P-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId of 51 characters returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 0 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-08\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":0,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-09\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":1000,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph -1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":-1,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000.01 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":1000.01,\"headingDeg\":90}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 0 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-10\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":0}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 360 returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-11\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":360}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg -1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":-1}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 360.01 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":360.01}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty body returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Body that is not JSON returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{not json"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Body that is a JSON array returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[]"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Duplicate id returns 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(409);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-01\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T11:00:00Z\",\"latitude\":11.5,\"longitude\":21.5,\"speedKph\":60,\"headingDeg\":100}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Duplicate of a seeded id returns 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(409);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-10001-01\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T11:00:00Z\",\"latitude\":11.5,\"longitude\":21.5,\"speedKph\":60,\"headingDeg\":100}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 5000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":5000,\"headingDeg\":90}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":1000000,\"headingDeg\":90}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph -10 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":-10,\"headingDeg\":90}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 500 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":500}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 10000 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-x\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":10.5,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":10000}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "latitude with 8 decimals returns 201 (rounded to 6)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);",
+                  "h.expectStored({ latitude: -33.924912 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/positions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-p-12\",\"deviceId\":\"TEST-P-40001\",\"occurredAt\":\"2025-02-01T10:00:00Z\",\"latitude\":-33.92491234,\"longitude\":20.5,\"speedKph\":50,\"headingDeg\":90}"
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "3 GET by id",
-      "item": []
+      "item": [
+        {
+          "name": "Seeded position is found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-10001-01', deviceId: 'TEST-D-10001', occurredAt: '2025-01-15T08:00:00Z', latitude: 51.507351, longitude: -0.127758, speedKph: 42.5, headingDeg: 90 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-10001-01"
+          },
+          "response": []
+        },
+        {
+          "name": "Seeded position of another device is found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-20001-03', deviceId: 'TEST-X-20001', occurredAt: '2025-01-16T15:00:00Z', latitude: 34.054, longitude: -118.245, speedKph: 60.5, headingDeg: 280 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-20001-03"
+          },
+          "response": []
+        },
+        {
+          "name": "Unknown id returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(404);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-does-not-exist"
+          },
+          "response": []
+        },
+        {
+          "name": "Create a position for the round trip",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-g-01\",\"deviceId\":\"TEST-G-30001\",\"occurredAt\":\"2025-02-02T09:30:00Z\",\"latitude\":-33.9249,\"longitude\":18.4241,\"speedKph\":72.5,\"headingDeg\":135}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Created position is returned by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-g-01', deviceId: 'TEST-G-30001', occurredAt: '2025-02-02T09:30:00Z', latitude: -33.9249, longitude: 18.4241, speedKph: 72.5, headingDeg: 135 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-g-01"
+          },
+          "response": []
+        },
+        {
+          "name": "Id of 101 characters returns 404 (not the 100-character id it starts with)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(404);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-p-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "response": []
+        },
+        {
+          "name": "Id with encoded special characters returns 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(404);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos%20test%25x"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing API key returns 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(401);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-10001-01",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "4 OData queries",
-      "item": []
+      "item": [
+        {
+          "name": "eq on deviceId returns that device's positions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectCount(5);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "eq on a second device returns only its positions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10002-01', 'pos-test-10002-02', 'pos-test-10002-03', 'pos-test-10002-04']);",
+                  "h.expectCount(4);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "eq on the third device returns only its positions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-X-20001'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "eq on an unknown device returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-NOPE-99999'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "eq on deviceId ignores letter case",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectCount(5);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'test-d-10001'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Date range includes both boundaries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-02', 'pos-test-10001-03']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T10:00:00Z and occurredAt le 2025-01-15T12:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Range that starts and ends on the same instant returns that position",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01']);",
+                  "h.expectCount(1);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:00Z and occurredAt le 2025-01-15T08:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "ge only returns everything from that instant on",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-16T00:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "le only returns everything up to that instant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt le 2025-01-15T23:59:59Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Range between two positions returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:01Z and occurredAt le 2025-01-15T09:59:59Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Device and date range combined",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10002-01', 'pos-test-10002-02']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002' and occurredAt ge 2025-01-15T00:00:00Z and occurredAt le 2025-01-15T23:59:59Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Date range without a device mixes devices in time order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-20001-01', 'pos-test-10001-03', 'pos-test-10002-02']);",
+                  "h.expectCount(6);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T00:00:00Z and occurredAt le 2025-01-15T23:59:59Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Quoted dates give the same result as unquoted dates",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-02', 'pos-test-10001-03']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge '2025-01-15T10:00:00Z' and occurredAt le '2025-01-15T12:00:00Z'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith on deviceId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10002-02', 'pos-test-10001-04', 'pos-test-10002-03', 'pos-test-10001-05', 'pos-test-10002-04']);",
+                  "h.expectCount(9);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith that matches the third device",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-X')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith with a space after the comma",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId, 'TEST-X')"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith with no match returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'NOPE')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "contains on deviceId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10002-02', 'pos-test-10001-04', 'pos-test-10002-03', 'pos-test-10001-05', 'pos-test-10002-04']);",
+                  "h.expectCount(9);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=contains(deviceId,'D-100')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "contains that matches the third device",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=contains(deviceId,'X-2000')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "contains with no match returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=contains(deviceId,'nothing')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith combined with a date range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-04', 'pos-test-10002-03', 'pos-test-10001-05', 'pos-test-10002-04']);",
+                  "h.expectCount(4);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D') and occurredAt ge 2025-01-16T00:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby occurredAt asc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectSorted('asc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby occurredAt desc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-05', 'pos-test-10001-04', 'pos-test-10001-03', 'pos-test-10001-02', 'pos-test-10001-01']);",
+                  "h.expectSorted('desc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt desc"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby occurredAt without a direction means asc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt"
+          },
+          "response": []
+        },
+        {
+          "name": "No orderby sorts by occurredAt asc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectSorted('asc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby desc across devices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10002-04', 'pos-test-10001-05', 'pos-test-10002-03', 'pos-test-10001-04', 'pos-test-10002-02', 'pos-test-10001-03', 'pos-test-10001-02', 'pos-test-10002-01', 'pos-test-10001-01']);",
+                  "h.expectSorted('desc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$orderby=occurredAt desc"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby on another field returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$orderby=deviceId asc"
+          },
+          "response": []
+        },
+        {
+          "name": "orderby with an unknown direction returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$orderby=occurredAt up"
+          },
+          "response": []
+        },
+        {
+          "name": "top 0 returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$top=0"
+          },
+          "response": []
+        },
+        {
+          "name": "top 1 returns the first item only",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$top=1"
+          },
+          "response": []
+        },
+        {
+          "name": "top 5 returns the first five items across devices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10002-02']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$top=5&$orderby=occurredAt asc"
+          },
+          "response": []
+        },
+        {
+          "name": "top above the number of matches returns all matches",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectCountMatchesItems();",
+                  "pm.test('Nine items are returned', () => {",
+                  "    pm.expect(pm.response.json().value).to.have.lengthOf(9);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$top=50&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "top with orderby desc returns the latest items",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-05', 'pos-test-10001-04']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt desc&$top=2"
+          },
+          "response": []
+        },
+        {
+          "name": "top 1000 is allowed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$top=1000"
+          },
+          "response": []
+        },
+        {
+          "name": "top 1001 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$top=1001"
+          },
+          "response": []
+        },
+        {
+          "name": "top -1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$top=-1"
+          },
+          "response": []
+        },
+        {
+          "name": "top abc returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$top=abc"
+          },
+          "response": []
+        },
+        {
+          "name": "top 1.5 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$top=1.5"
+          },
+          "response": []
+        },
+        {
+          "name": "count=true adds @odata.count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectCount(4);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "count=false leaves out @odata.count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectNoCount();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'&$count=false"
+          },
+          "response": []
+        },
+        {
+          "name": "No count option leaves out @odata.count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectNoCount();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10002'"
+          },
+          "response": []
+        },
+        {
+          "name": "count=True returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$count=True"
+          },
+          "response": []
+        },
+        {
+          "name": "count=yes returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$count=yes"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported operator gt returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt gt 2025-01-15T10:00:00Z"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported operator ne returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId ne 'TEST-D-10001'"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter on an unsupported field returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=speedKph eq 50"
+          },
+          "response": []
+        },
+        {
+          "name": "or in a filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' or deviceId eq 'TEST-D-10002'"
+          },
+          "response": []
+        },
+        {
+          "name": "deviceId without quotes returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq TEST-D-10001"
+          },
+          "response": []
+        },
+        {
+          "name": "Unclosed startswith returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D'"
+          },
+          "response": []
+        },
+        {
+          "name": "Date that is not a date returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge notadate"
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a timezone returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:00"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter="
+          },
+          "response": []
+        },
+        {
+          "name": "Same clause twice returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and deviceId eq 'TEST-D-10002'"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported option skip returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$skip=1"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported option select returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$select=id"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith ignores letter case",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10002-02', 'pos-test-10001-04', 'pos-test-10002-03', 'pos-test-10001-05', 'pos-test-10002-04']);",
+                  "h.expectCount(9);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'test-d')&$orderby=occurredAt asc&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "contains treats the underscore as plain text",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=contains(deviceId,'D_10')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Range where ge is later than le returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-15T00:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "A whole day",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-04', 'pos-test-10002-03', 'pos-test-20001-02', 'pos-test-10001-05', 'pos-test-10002-04', 'pos-test-20001-03']);",
+                  "h.expectCount(6);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-16T00:00:00Z and occurredAt le 2025-01-16T23:59:59Z&$orderby=occurredAt asc&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Only an upper bound (le)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt le 2025-01-15T09:00:00Z&$orderby=occurredAt asc&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Date range one second inside the boundaries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:01Z and occurredAt le 2025-01-15T11:59:59Z&$orderby=occurredAt asc"
+          },
+          "response": []
+        },
+        {
+          "name": "startswith combined with a date bound (le)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D') and occurredAt le 2025-01-15T10:00:00Z&$orderby=occurredAt asc"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing closing quote returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001"
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a time in a filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15"
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "5 Data integrity",
-      "item": []
+      "item": [
+        {
+          "name": "Create position A (10:00)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-i-a\",\"deviceId\":\"TEST-I-50001\",\"occurredAt\":\"2025-02-10T10:00:00Z\",\"latitude\":1.5,\"longitude\":2.5,\"speedKph\":40,\"headingDeg\":45}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Create position B (11:00)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-i-b\",\"deviceId\":\"TEST-I-50001\",\"occurredAt\":\"2025-02-10T11:00:00Z\",\"latitude\":1.6,\"longitude\":2.6,\"speedKph\":41,\"headingDeg\":46}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Create position C (09:00, created last but earliest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-i-c\",\"deviceId\":\"TEST-I-50001\",\"occurredAt\":\"2025-02-10T09:00:00Z\",\"latitude\":1.4,\"longitude\":2.4,\"speedKph\":39,\"headingDeg\":44}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "Created positions appear in the list, oldest first",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-c', 'pos-test-i-a', 'pos-test-i-b']);",
+                  "h.expectSorted('asc');",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt asc&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Created positions appear in the list, newest first",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-b', 'pos-test-i-a', 'pos-test-i-c']);",
+                  "h.expectSorted('desc');",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt desc&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Count is the total even when top limits the items (desc)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-b']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt desc&$top=1&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Count is the total even when top limits the items (asc)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-c', 'pos-test-i-a']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt asc&$top=2&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Created position is found by a date range on its exact time",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-a']);",
+                  "h.expectCount(1);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001' and occurredAt ge 2025-02-10T10:00:00Z and occurredAt le 2025-02-10T10:00:00Z&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Created positions are found by contains",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-i-c', 'pos-test-i-a', 'pos-test-i-b']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=contains(deviceId,'I-50001')&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Created position is returned by id with its values",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-i-a', deviceId: 'TEST-I-50001', occurredAt: '2025-02-10T10:00:00Z', latitude: 1.5, longitude: 2.5, speedKph: 40, headingDeg: 45 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-i-a"
+          },
+          "response": []
+        },
+        {
+          "name": "Duplicate id with different values returns 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(409);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-i-a\",\"deviceId\":\"TEST-I-50001\",\"occurredAt\":\"2025-02-10T12:00:00Z\",\"latitude\":9.9,\"longitude\":9.9,\"speedKph\":99,\"headingDeg\":99}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "A rejected duplicate leaves the original unchanged",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-i-a', deviceId: 'TEST-I-50001', occurredAt: '2025-02-10T10:00:00Z', latitude: 1.5, longitude: 2.5, speedKph: 40, headingDeg: 45 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-i-a"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid position returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\":\"pos-test-i-bad\",\"deviceId\":\"TEST-I-50001\",\"occurredAt\":\"2025-02-10T13:00:00Z\",\"latitude\":91,\"longitude\":2.5,\"speedKph\":40,\"headingDeg\":45}"
+            },
+            "url": "{{baseUrl}}/positions"
+          },
+          "response": []
+        },
+        {
+          "name": "A rejected position is not stored",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(404);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions/pos-test-i-bad"
+          },
+          "response": []
+        },
+        {
+          "name": "The device still has exactly three positions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectCount(3);",
+                  "h.expectCountMatchesItems();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$count=true"
+          },
+          "response": []
+        },
+        {
+          "name": "Seeded data is untouched by the earlier folders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectCount(5);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$count=true"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "auth": {
@@ -282,30 +3989,92 @@
       "listen": "prerequest",
       "script": {
         "exec": [
-          "// Shared helpers for every test script in this collection.\r",
-          "// Postman scripts cannot import each other, so the code lives in one function,\r",
-          "// its text is saved in a collection variable, and each test script loads it with eval().\r",
-          "function buildHelpers() {\r",
-          "    return {\r",
-          "        // The response must have exactly this HTTP status code.\r",
-          "        expectStatus(code) {\r",
-          "            pm.test(`Status is ${code}`, () => {\r",
-          "                pm.response.to.have.status(code);\r",
-          "            });\r",
-          "        },\r",
-          "\r",
-          "        // Every error response must be JSON of the form { \"error\": \"some text\" }.\r",
-          "        expectError() {\r",
-          "            pm.test('Body is { \"error\": \"...\" }', () => {\r",
-          "                const body = pm.response.json();\r",
-          "                pm.expect(body).to.have.property('error');\r",
-          "                pm.expect(body.error).to.be.a('string').and.not.empty;\r",
-          "            });\r",
-          "        }\r",
-          "    };\r",
-          "}\r",
-          "\r",
-          "pm.collectionVariables.set('helpers', buildHelpers.toString());\r",
+          "// Shared helpers for every test script in this collection.",
+          "// Postman scripts cannot import each other, so the code lives in one function,",
+          "// its text is saved in a collection variable, and each test script loads it with eval().",
+          "function buildHelpers() {",
+          "    return {",
+          "        // The response must have exactly this HTTP status code.",
+          "        expectStatus(code) {",
+          "            pm.test(`Status is ${code}`, () => {",
+          "                pm.response.to.have.status(code);",
+          "            });",
+          "        },",
+          "",
+          "        // Every error response must be JSON of the form { \"error\": \"some text\" }.",
+          "        expectError() {",
+          "            pm.test('Body is { \"error\": \"...\" }', () => {",
+          "                const body = pm.response.json();",
+          "                pm.expect(body).to.have.property('error');",
+          "                pm.expect(body.error).to.be.a('string').and.not.empty;",
+          "            });",
+          "        },",
+          "",
+          "        // After a successful POST: read the position back with GET and compare it with the request body.",
+          "        // \"changes\" replaces expected values, for example a timestamp that comes back in UTC.",
+          "        expectStored(changes) {",
+          "            const expected = Object.assign(JSON.parse(pm.request.body.raw), changes || {});",
+          "            pm.sendRequest({",
+          "                url: pm.variables.replaceIn('{{baseUrl}}') + '/positions/' + encodeURIComponent(expected.id),",
+          "                method: 'GET',",
+          "                header: { 'X-Api-Key': pm.variables.get('apiKey') }",
+          "            }, (err, res) => {",
+          "                pm.test('Stored position matches what was sent', () => {",
+          "                    pm.expect(err).to.equal(null);",
+          "                    pm.expect(res.code).to.equal(200);",
+          "                    pm.expect(res.json()).to.eql(expected);",
+          "                });",
+          "            });",
+          "        },",
+          "",
+          "        // GET by id: the body must be exactly this position.",
+          "        expectPosition(expected) {",
+          "            pm.test('Body is the expected position', () => {",
+          "                pm.expect(pm.response.json()).to.eql(expected);",
+          "            });",
+          "        },",
+          "",
+          "        // List responses: the ids in \"value\" must be exactly these, in this order.",
+          "        expectIds(ids) {",
+          "            pm.test(ids.length ? `Items are ${ids.join(', ')}` : 'Items are empty', () => {",
+          "                pm.expect(pm.response.json().value.map((p) => p.id)).to.eql(ids);",
+          "            });",
+          "        },",
+          "",
+          "        // \"@odata.count\" must be present and equal n.",
+          "        expectCount(n) {",
+          "            pm.test(`@odata.count is ${n}`, () => {",
+          "                pm.expect(pm.response.json()['@odata.count']).to.equal(n);",
+          "            });",
+          "        },",
+          "",
+          "        // \"@odata.count\" must not be in the response.",
+          "        expectNoCount() {",
+          "            pm.test('No @odata.count in the response', () => {",
+          "                pm.expect(pm.response.json()).to.not.have.property('@odata.count');",
+          "            });",
+          "        },",
+          "",
+          "        // The items must be in order of occurredAt, \"asc\" or \"desc\" (compared as real dates, not as text).",
+          "        expectSorted(direction) {",
+          "            pm.test(`Items are sorted by occurredAt ${direction}`, () => {",
+          "                const times = pm.response.json().value.map((p) => Date.parse(p.occurredAt));",
+          "                const sorted = [...times].sort((a, b) => (direction === 'asc' ? a - b : b - a));",
+          "                pm.expect(times).to.eql(sorted);",
+          "            });",
+          "        },",
+          "",
+          "        // Without $top the count must equal the number of items returned.",
+          "        expectCountMatchesItems() {",
+          "            pm.test('@odata.count matches the number of items', () => {",
+          "                const body = pm.response.json();",
+          "                pm.expect(body['@odata.count']).to.equal(body.value.length);",
+          "            });",
+          "        }",
+          "    };",
+          "}",
+          "",
+          "pm.collectionVariables.set('helpers', buildHelpers.toString());",
           ""
         ],
         "type": "text/javascript"
