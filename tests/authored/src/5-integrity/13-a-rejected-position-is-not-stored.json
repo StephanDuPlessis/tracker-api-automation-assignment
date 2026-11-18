@@ -1,0 +1,31 @@
+{
+  "name": "A rejected position is not stored",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(404);",
+          "h.expectError();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos-test-int-bad",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos-test-int-bad"
+      ]
+    }
+  },
+  "response": []
+}

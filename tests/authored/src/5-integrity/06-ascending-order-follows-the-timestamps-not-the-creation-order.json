@@ -1,0 +1,45 @@
+{
+  "name": "Ascending order follows the timestamps, not the creation order",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-int-003',",
+          "    'pos-test-int-001',",
+          "    'pos-test-int-002'",
+          "]);",
+          "h.expectSortedByOccurredAt('asc');"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt asc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-I-50001'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        }
+      ]
+    }
+  },
+  "response": []
+}

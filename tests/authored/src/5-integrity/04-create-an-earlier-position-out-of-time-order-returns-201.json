@@ -1,0 +1,44 @@
+{
+  "name": "Create an earlier position out of time order returns 201",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(201);",
+          "h.expectStored(JSON.parse(pm.request.body.raw));"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "rawFile": "bodies/04-earlier-position.json",
+      "options": {
+        "raw": {
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/positions",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ]
+    }
+  },
+  "response": []
+}

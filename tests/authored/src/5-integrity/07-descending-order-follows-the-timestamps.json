@@ -1,0 +1,45 @@
+{
+  "name": "Descending order follows the timestamps",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-int-002',",
+          "    'pos-test-int-001',",
+          "    'pos-test-int-003'",
+          "]);",
+          "h.expectSortedByOccurredAt('desc');"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-I-50001'&$orderby=occurredAt desc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-I-50001'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt desc"
+        }
+      ]
+    }
+  },
+  "response": []
+}

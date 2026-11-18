@@ -1,0 +1,50 @@
+{
+  "name": "Count matches the items returned",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-int-003',",
+          "    'pos-test-int-001',",
+          "    'pos-test-int-002'",
+          "]);",
+          "h.expectCount(3);",
+          "h.expectCountMatchesItems();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-I')&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "startswith(deviceId,'TEST-I')"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

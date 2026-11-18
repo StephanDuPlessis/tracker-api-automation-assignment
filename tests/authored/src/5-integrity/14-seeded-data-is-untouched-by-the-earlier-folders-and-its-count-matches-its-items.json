@@ -1,0 +1,52 @@
+{
+  "name": "Seeded data is untouched by the earlier folders and its count matches its items",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([",
+          "    'pos-test-10001-01',",
+          "    'pos-test-10001-02',",
+          "    'pos-test-10001-03',",
+          "    'pos-test-10001-04',",
+          "    'pos-test-10001-05'",
+          "]);",
+          "h.expectCount(5);",
+          "h.expectCountMatchesItems();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-D-10001'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

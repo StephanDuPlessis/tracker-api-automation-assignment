@@ -37,7 +37,12 @@ collection.item = folderNames.map((folderName) => {
 
         // If the request points to a body file, load its text into the body.
         if (body && body.rawFile) {
-            body.raw = fs.readFileSync(path.join(folderDir, body.rawFile), 'utf8').trim();
+            const bodyPath = path.join(folderDir, body.rawFile);
+            const text = fs.readFileSync(bodyPath, 'utf8').trim();
+            if (text === '') {
+                throw new Error(`Body file is empty: ${bodyPath}`);
+            }
+            body.raw = text;
             delete body.rawFile;
         }
         return request;

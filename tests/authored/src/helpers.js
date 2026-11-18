@@ -81,6 +81,28 @@ function buildHelpers() {
             pm.test('Response has no @odata.count', () => {
                 pm.expect(pm.response.json()).to.not.have.property('@odata.count');
             });
+        },
+
+        // Every item must be at or after (asc) or at or before (desc) the item before it, by occurredAt.
+        expectSortedByOccurredAt(direction) {
+            pm.test(`Items are sorted by occurredAt ${direction}`, () => {
+                const times = pm.response.json().value.map((item) => new Date(item.occurredAt).getTime());
+                for (let i = 1; i < times.length; i++) {
+                    if (direction === 'asc') {
+                        pm.expect(times[i], `item ${i}`).to.be.at.least(times[i - 1]);
+                    } else {
+                        pm.expect(times[i], `item ${i}`).to.be.at.most(times[i - 1]);
+                    }
+                }
+            });
+        },
+
+        // With $count=true and no $top, @odata.count must equal the number of items returned.
+        expectCountMatchesItems() {
+            pm.test('@odata.count matches the number of items', () => {
+                const body = pm.response.json();
+                pm.expect(body['@odata.count']).to.equal(body.value.length);
+            });
         }
     };
 }
