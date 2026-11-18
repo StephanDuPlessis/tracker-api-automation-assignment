@@ -14,7 +14,9 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 - Done: SQL scripts (`db/01_schema.sql`, `02_seed.sql`, `99_cleanup.sql`), run and verified on LocalDB (database PositionsDb, 12 seeded positions: 5 / 4 / 3 per device).
 - Done: API step 1 in `src/PositionsApi` (API key auth, POST /positions, GET /positions/{id}), checked by hand: 201, 200, 401, 409, 400, 404. Timestamps serialise as `...56Z`.
 - Evidence of a validation gap is saved in `docs/evidence/` (before-fix output and truncation check).
-- API status: incomplete. Auth, POST /positions and GET /positions/{id} are done. GET /positions with OData is not built. `Program.cs` and `PositionRepository.cs` have not been code-reviewed.
+- API status: feature complete. Auth, POST /positions, GET /positions/{id} and GET /positions with OData are built. `Program.cs` and `PositionRepository.cs` have not been code-reviewed as a whole (the OData parts were reviewed piece by piece).
+- Done: GET /positions with OData (`ODataQuery.cs`, `ODataParser.cs`, `QueryAsync` in `PositionRepository.cs`, route in `Program.cs`). Typed and built by the owner in small pieces. Ten manual calls passed: top+count+orderby desc, deviceId eq, `$skip` 400, no key 401, inclusive date range (quoted and unquoted), LIKE wildcard escaping, startswith, `$top=0`, `$top=-1` 400. `PositionRequest.IsoTimestampWithTimeZone` in `Position.cs` changed from private to internal so the parser reuses the POST timestamp rule.
+- Parked decision: OData option names (`$TOP`) are accepted case-insensitively (see the memory note on the pre-submission re-check). Document in SOLUTION.md or reject uppercase.
 - Done: Node v26.13.1 and npm 11.20.0 installed. Newman 6.2.3 and newman-reporter-htmlextra 1.23.1 installed globally and `newman -v` works. Postman desktop is not installed yet (needed only to build the collection).
 - Done: BUILD_NOTES has D16, A4 (rounding limitation), the validation issues and the AI usage row.
 - Done: decision D16 in `src/PositionsApi/Position.cs` (id over 100 characters, deviceId over 50, speedKph outside 0 to 1000, headingDeg outside 0 to 360 each return 400 with a clear message). Verified against the running API with `scripts/validation-check.ps1` (built by the owner in small pieces): 14 cases, all pass (`Failures: 0 of 14`). Cases 1 to 7 return 400, case 8 returns 201 (known limitation: extra latitude decimals are rounded), cases 9 to 14 (boundaries) return 201. Output saved in `docs/evidence/validation-after-fix.txt`.
@@ -25,13 +27,16 @@ Shared status file for Claude Code and GitHub Copilot. Read it at the start of a
 
 ## In progress
 
-- Nothing.
-- Everything so far is committed and pushed (src, scripts, evidence, docs). Local-only: `scripts/set-env.local.ps1` (gitignored).
+- Nothing is being built right now. The OData work is finished and checked by hand but NOT committed yet: untracked `ODataQuery.cs` and `ODataParser.cs`; modified `Position.cs`, `PositionRepository.cs`, `Program.cs`, `.gitignore`, `docs/AI_PROMPTS.md` (entries 15 and 16) and this file. The owner commits themselves (suggested three commits: parser, repository plus endpoint, docs and gitignore).
+- Local-only (gitignored): `scripts/set-env.local.ps1`, `docs/CODE_NOTES.md` and the `docs/notes/` folder.
+- `docs/CODE_NOTES.md` (general topics) and `docs/notes/<Class>.md` (one file per class) are the owner's private study notes for the video and interview. They are gitignored on purpose: never commit them, never reference them from committed docs. Claude writes these notes (the owner types the code); `docs/notes/ODataParser.md` exists and gets a section per piece.
+- Notes for the owner's video and interview are up to date for every piece built so far (`docs/notes/ODataQuery.md`, `ODataParser.md`, `PositionRepository.md`, `Program.md`). Keep adding a section per piece.
+- Behaviours to document in SOLUTION.md as assumptions or limitations: 400 for anything unsupported; the parser splits on ` and ` (a device id containing that text inside quotes gives 400); raw `+02:00` in a URL fails (use `%2B`); device matching follows SQL Server's case-insensitive collation; count and items come from two separate queries; default order is `OccurredAt ASC, Id ASC`.
 
 ## Next steps, in order
 
-1. GET /positions with OData in its own class `ODataQuery.cs` (no OData library): `$filter` (deviceId eq, occurredAt ge/le, startswith, contains, joined only by `and`), `$orderby=occurredAt asc|desc`, `$top` (0 returns empty; negative, non-numeric or above 1000 returns 400), `$count=true`. Anything else returns 400. Parameterised SQL only. Confirm the grammar with the owner before writing code, then build and explain it in small pieces.
-2. Re-run the six basic calls (201, 200, 401, 409, 400, 404) plus a few manual OData calls against the finished API. The validation script already resets the database; run `db\99_cleanup.sql` then `db\02_seed.sql` for a clean seed-only state.
+1. The owner commits the OData work (see In progress).
+2. Optional: re-run the six basic calls (201, 200, 401, 409, 400, 404) once against the finished API. For a clean seed-only state run `db\99_cleanup.sql` then `db\02_seed.sql`.
 3. Install Postman (authoring only; Newman is the runner). Build the Postman collection in `tests/`, run script in `scripts/`, pipeline `azure-pipelines.yml`, README.md, SOLUTION.md.
 
 ## Things to remember

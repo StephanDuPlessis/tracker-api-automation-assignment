@@ -152,6 +152,35 @@ Turns about how to export the Copilot chat are left out of this log because they
 **What the AI gave:** A task list with estimates (its own estimates, not from the brief). It summarised the recruiter's replies: stick to Postman/Newman or ReadyAPI, include the AI prompts and my reasoning, and explain the choices I made and the ones I decided against. It said it could not see a reply to my request for more time. It also proposed this file.
 **What I did:** Sent exports of the Copilot chat, the Claude chat log and the Claude Code sessions. This file was built from them.
 
+### 15. OData approach and the first piece
+
+**Prompts:**
+> I started a new chat, what needs to be done?
+> Why are we writing our own OData?
+> But does that not go against what the assignment says? [brief attached]
+> yes
+> What does the "sealed" do?
+> Why are they not meant for inheritance?
+> Keep it. Give me the stuff I need to create again, I have not done anything yet
+> Can we add notes somewhere so that I can do quick references for the video and the interview thereafter?
+
+**What the AI gave:** A summary of the repo state from `HANDOFF.md` and git. The reasons for a hand-written OData parser, then a check of that decision against the brief (allowed: own target, "OData-style", deviations documented). A proposed grammar and plan, and piece 1 (`ODataQuery` record) to type. Explanations of `sealed` and inheritance. A private notes file for quick-reference explanations (kept out of the repo).
+**What I did:** Questioned the decision against the brief, confirmed the grammar, decided to keep `sealed`, and asked for explanation notes for the video and interview.
+
+### 16. Building `GET /positions` with OData
+
+**Prompts:**
+> Can we add notes somewhere so that I can do quick references for the video and the interview thereafter?
+> Give me 2c-2 / 2c-3 [and the other pieces, one at a time]
+> Check the class and make sure I've done everything correctly so far
+> Should we add a editor config?
+> I want it to look professional, so fix the cosmetics
+> Build succeeded, give me 4b
+> [screenshots of manual curl results]
+
+**What the AI gave:** The OData parser (`ODataQuery.cs`, `ODataParser.cs`), `QueryAsync` and its helpers in `PositionRepository.cs`, and the `GET /positions` route in `Program.cs`, one small piece at a time with a short "why" for each. A review of the finished parser (no bugs found, three cosmetic points), a view on `.editorconfig` (not needed now), and ten manual `curl.exe` calls to check the endpoint.
+**What I did:** Typed each piece myself and built after each one. Found that the first three calls returned 401 because the API key was not set in that terminal, fixed it, and re-ran. All ten manual calls then gave the expected results. Questioned the `sealed` keyword and the `.editorconfig` idea, and decided to keep the first and skip the second for now. Caught that the formatter had changed the indentation of a line in `Position.cs` and had it restored. The AI's first version of the date helper pointed at the wrong class name (`Position` instead of `PositionRequest`); the compiler error showed it and it was corrected.
+
 ---
 
 ## What I reviewed or corrected myself
