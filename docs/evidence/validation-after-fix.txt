@@ -1,0 +1,43 @@
+1 speedKph 1000000 (too big for column)
+400 (expected 400) PASS {"error":"speedKph must be between 0 and 1000."}
+
+2 speedKph 5000 (fits column, unrealistic)
+400 (expected 400) PASS {"error":"speedKph must be between 0 and 1000."}
+
+3 speedKph -10 (negative)
+400 (expected 400) PASS {"error":"speedKph must be between 0 and 1000."}
+
+4 headingDeg 10000 (too big for column)
+400 (expected 400) PASS {"error":"headingDeg must be between 0 and 360."}
+
+5 headingDeg 500 (fits column, over 360)
+400 (expected 400) PASS {"error":"headingDeg must be between 0 and 360."}
+
+6 id of 101 characters
+400 (expected 400) PASS {"error":"id must not exceed 100 characters."}
+
+7 deviceId of 51 characters
+400 (expected 400) PASS {"error":"deviceId must not exceed 50 characters."}
+
+8 latitude with 8 decimals (known limitation, rounded)
+201 (expected 201) PASS {"id":"pos-test-val-08","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.92491234,"longitude":18.4241,"speedKph":60.5,"headingDeg":90}
+
+9 speedKph 0 (lower boundary)
+201 (expected 201) PASS {"id":"pos-test-val-09","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":0,"headingDeg":90}
+
+10 speedKph 1000 (upper boundary)
+201 (expected 201) PASS {"id":"pos-test-val-10","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":1000,"headingDeg":90}
+
+11 headingDeg 0 (lower boundary)
+201 (expected 201) PASS {"id":"pos-test-val-11","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":60.5,"headingDeg":0}
+
+12 headingDeg 360 (upper boundary)
+201 (expected 201) PASS {"id":"pos-test-val-12","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":60.5,"headingDeg":360}
+
+13 id of 100 characters (boundary)
+201 (expected 201) PASS {"id":"pos-test-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","deviceId":"TEST-N-30001","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":60.5,"headingDeg":90}
+
+14 deviceId of 50 characters (boundary)
+201 (expected 201) PASS {"id":"pos-test-val-14","deviceId":"TEST-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","occurredAt":"2025-01-15T12:34:56Z","latitude":-33.9249,"longitude":18.4241,"speedKph":60.5,"headingDeg":90}
+
+Failures: 0 of 14
