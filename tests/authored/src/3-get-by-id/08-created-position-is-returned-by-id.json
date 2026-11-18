@@ -1,0 +1,31 @@
+{
+  "name": "Created position is returned by id",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectPosition({ id: 'pos-test-get-001', deviceId: 'TEST-G-30001', occurredAt: '2025-02-02T09:30:00Z', latitude: -33.9249, longitude: 18.4241, speedKph: 72.5, headingDeg: 135 });"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos-test-get-001",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos-test-get-001"
+      ]
+    }
+  },
+  "response": []
+}

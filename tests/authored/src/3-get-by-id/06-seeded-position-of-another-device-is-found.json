@@ -1,0 +1,31 @@
+{
+  "name": "Seeded position of another device is found",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectPosition({ id: 'pos-test-20001-03', deviceId: 'TEST-X-20001', occurredAt: '2025-01-16T15:00:00Z', latitude: 34.054, longitude: -118.245, speedKph: 60.5, headingDeg: 280 });"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions/pos-test-20001-03",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions",
+        "pos-test-20001-03"
+      ]
+    }
+  },
+  "response": []
+}

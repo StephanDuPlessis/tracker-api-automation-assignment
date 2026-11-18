@@ -1,0 +1,45 @@
+{
+  "name": "eq on the third device returns only its rows",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);",
+          "h.expectCount(3);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-X-20001'&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-X-20001'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

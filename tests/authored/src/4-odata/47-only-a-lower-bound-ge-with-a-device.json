@@ -1,0 +1,45 @@
+{
+  "name": "Only a lower bound (ge) with a device",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-10001-04', 'pos-test-10001-05']);",
+          "h.expectCount(2);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-16T00:00:00Z&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-16T00:00:00Z"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

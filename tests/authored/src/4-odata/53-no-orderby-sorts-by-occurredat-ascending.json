@@ -1,0 +1,37 @@
+{
+  "name": "No orderby sorts by occurredAt ascending",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+          "h.expectSortedByOccurredAt('asc');"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'TEST-D-10001'"
+        }
+      ]
+    }
+  },
+  "response": []
+}

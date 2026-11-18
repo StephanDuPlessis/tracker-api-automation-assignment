@@ -1,0 +1,41 @@
+{
+  "name": "contains with no match returns an empty list",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds([]);",
+          "h.expectCount(0);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=contains(deviceId,'nothing')&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "contains(deviceId,'nothing')"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}

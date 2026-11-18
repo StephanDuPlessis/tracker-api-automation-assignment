@@ -1,0 +1,40 @@
+{
+  "name": "startswith with a space after the comma",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId, 'TEST-X')&$orderby=occurredAt asc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "startswith(deviceId, 'TEST-X')"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        }
+      ]
+    }
+  },
+  "response": []
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Order descending across devices",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-10002-04', 'pos-test-10001-05', 'pos-test-10002-03', 'pos-test-10001-04', 'pos-test-10002-02', 'pos-test-10001-03', 'pos-test-10001-02', 'pos-test-10002-01', 'pos-test-10001-01']);",
+          "h.expectSortedByOccurredAt('desc');"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$orderby=occurredAt desc",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "startswith(deviceId,'TEST-D')"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt desc"
+        }
+      ]
+    }
+  },
+  "response": []
+}

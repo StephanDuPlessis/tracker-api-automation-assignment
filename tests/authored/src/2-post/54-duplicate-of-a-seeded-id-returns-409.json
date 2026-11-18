@@ -1,0 +1,44 @@
+{
+  "name": "Duplicate of a seeded id returns 409",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(409);",
+          "h.expectError();"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "rawFile": "bodies/54-duplicate-of-a-seeded-id-returns-409.json",
+      "options": {
+        "raw": {
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/positions",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ]
+    }
+  },
+  "response": []
+}

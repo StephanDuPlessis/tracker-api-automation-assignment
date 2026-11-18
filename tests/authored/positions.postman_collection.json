@@ -2289,6 +2289,358 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "latitude null returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-201\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": null,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "longitude as a boolean returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-202\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": true,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph -1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-203\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": -1,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "speedKph 1000.01 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-204\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 1000.01,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg -1 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-205\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": -1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "headingDeg 360.01 returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-post-206\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 360.01\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Empty body returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Duplicate of a seeded id returns 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(409);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-10001-01\",\n  \"deviceId\": \"TEST-P-40001\",\n  \"occurredAt\": \"2025-01-20T10:00:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 60.5,\n  \"headingDeg\": 90\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -2459,6 +2811,111 @@
               "path": [
                 "positions",
                 "pos-test-10001-01"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Seeded position of another device is found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-20001-03', deviceId: 'TEST-X-20001', occurredAt: '2025-01-16T15:00:00Z', latitude: 34.054, longitude: -118.245, speedKph: 60.5, headingDeg: 280 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions/pos-test-20001-03",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions",
+                "pos-test-20001-03"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a position for the round trip returns 201",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(201);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n  \"id\": \"pos-test-get-001\",\n  \"deviceId\": \"TEST-G-30001\",\n  \"occurredAt\": \"2025-02-02T09:30:00Z\",\n  \"latitude\": -33.9249,\n  \"longitude\": 18.4241,\n  \"speedKph\": 72.5,\n  \"headingDeg\": 135\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/positions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Created position is returned by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectPosition({ id: 'pos-test-get-001', deviceId: 'TEST-G-30001', occurredAt: '2025-02-02T09:30:00Z', latitude: -33.9249, longitude: 18.4241, speedKph: 72.5, headingDeg: 135 });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions/pos-test-get-001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions",
+                "pos-test-get-001"
               ]
             }
           },
@@ -4304,6 +4761,647 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "eq on the third device returns only its rows",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-X-20001'&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-X-20001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "eq on deviceId ignores letter case",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectCount(5);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'test-d-10001'&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'test-d-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Range that starts and ends on the same instant returns that row",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01']);",
+                  "h.expectCount(1);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:00Z and occurredAt le 2025-01-15T08:00:00Z&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:00Z and occurredAt le 2025-01-15T08:00:00Z"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Only a lower bound (ge) with a device",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectCount(2);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-16T00:00:00Z&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-16T00:00:00Z"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Range between two rows returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:01Z and occurredAt le 2025-01-15T09:59:59Z&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001' and occurredAt ge 2025-01-15T08:00:01Z and occurredAt le 2025-01-15T09:59:59Z"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith with a space after the comma",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-20001-01', 'pos-test-20001-02', 'pos-test-20001-03']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId, 'TEST-X')&$orderby=occurredAt asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId, 'TEST-X')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "startswith with no match returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'NOPE')&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'NOPE')"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "contains with no match returns an empty list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds([]);",
+                  "h.expectCount(0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=contains(deviceId,'nothing')&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "contains(deviceId,'nothing')"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Order descending across devices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10002-04', 'pos-test-10001-05', 'pos-test-10002-03', 'pos-test-10001-04', 'pos-test-10002-02', 'pos-test-10001-03', 'pos-test-10001-02', 'pos-test-10002-01', 'pos-test-10001-01']);",
+                  "h.expectSortedByOccurredAt('desc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$orderby=occurredAt desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-D')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No orderby sorts by occurredAt ascending",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+                  "h.expectSortedByOccurredAt('asc');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'TEST-D-10001'",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "deviceId eq 'TEST-D-10001'"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$top=5 returns the first five rows across devices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectIds(['pos-test-10001-01', 'pos-test-10002-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10002-02']);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D')&$orderby=occurredAt asc&$top=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-D')"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$top",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "$count=True returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$count=True",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$count",
+                  "value": "True"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filter on an unsupported field returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=speedKph eq 50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "speedKph eq 50"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unclosed startswith returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=startswith(deviceId,'TEST-D'",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "startswith(deviceId,'TEST-D'"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Date without a timezone in a filter returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=occurredAt ge 2025-01-15T10:00:00",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "occurredAt ge 2025-01-15T10:00:00"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unsupported query option $select returns 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(400);",
+                  "h.expectError();"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$select=id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$select",
+                  "value": "id"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -4929,6 +6027,51 @@
                 {
                   "key": "$filter",
                   "value": "deviceId eq 'TEST-D-10001'"
+                },
+                {
+                  "key": "$orderby",
+                  "value": "occurredAt asc"
+                },
+                {
+                  "key": "$count",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Created positions are found by contains",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+                  "h.expectStatus(200);",
+                  "h.expectCountMatchesItems();",
+                  "h.expectCount(3);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/positions?$filter=contains(deviceId,'I-50001')&$orderby=occurredAt asc&$count=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "positions"
+              ],
+              "query": [
+                {
+                  "key": "$filter",
+                  "value": "contains(deviceId,'I-50001')"
                 },
                 {
                   "key": "$orderby",

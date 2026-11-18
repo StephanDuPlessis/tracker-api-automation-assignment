@@ -1,0 +1,45 @@
+{
+  "name": "eq on deviceId ignores letter case",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const h = eval('(' + pm.collectionVariables.get('helpers') + ')')();",
+          "h.expectStatus(200);",
+          "h.expectIds(['pos-test-10001-01', 'pos-test-10001-02', 'pos-test-10001-03', 'pos-test-10001-04', 'pos-test-10001-05']);",
+          "h.expectCount(5);"
+        ]
+      }
+    }
+  ],
+  "request": {
+    "method": "GET",
+    "header": [],
+    "url": {
+      "raw": "{{baseUrl}}/positions?$filter=deviceId eq 'test-d-10001'&$orderby=occurredAt asc&$count=true",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "positions"
+      ],
+      "query": [
+        {
+          "key": "$filter",
+          "value": "deviceId eq 'test-d-10001'"
+        },
+        {
+          "key": "$orderby",
+          "value": "occurredAt asc"
+        },
+        {
+          "key": "$count",
+          "value": "true"
+        }
+      ]
+    }
+  },
+  "response": []
+}
