@@ -21,7 +21,7 @@ variables:
   newmanVersion: 6.2.3
   htmlextraVersion: 1.23.1
   # Where the API listens. The run script starts the API on the agent, so this is local.
-  # It can be changed here or overridden when the pipeline is run.
+  # Change it here if the API should listen somewhere else.
   BASE_URL: http://localhost:5080
   # Database settings. Plain variables become environment variables in every step.
   # The password is a secret variable (DB_PASSWORD) created in the pipeline's settings, not in this file.

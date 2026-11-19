@@ -11,7 +11,7 @@ The brief asks for an automated test suite for a Positions API, test data manage
 | Test runner | Postman collection run with Newman | The recruiter confirmed submissions must use Postman/Newman or ReadyAPI. Newman is headless and has JUnit and HTML reporters (D1, D6). |
 | API under test | .NET 9 minimal API in `src/PositionsApi` | Matches Tracker's C#/.NET stack (D2). |
 | OData | A hand-written parser for only the subset in the brief | Small enough to explain line by line, and anything unsupported returns 400 instead of being half-handled (D3). |
-| Database | SQL Server: LocalDB locally, a Docker service container in the pipeline | No Docker needed on my machine, and the same scripts and settings work in both places (D4). A `docker-compose.yml` starts the same SQL Server image for anyone without LocalDB. |
+| Database | SQL Server: LocalDB locally, a Docker service container in the pipeline | No Docker needed for a local run, and the same scripts and settings work in both places (D4). A `docker-compose.yml` starts the same SQL Server image for anyone without LocalDB. |
 | Settings | Environment variables, loaded from a gitignored `.env` locally | No secrets in the repository (D7, D18). |
 
 ## Key decisions
@@ -21,7 +21,7 @@ The brief asks for an automated test suite for a Positions API, test data manage
 | D1 | Postman with Newman | Named in the brief and confirmed by the recruiter; headless; JUnit reporter built in | ReadyAPI (heavier setup); a code-based framework (not accepted) |
 | D2 | Test our own .NET 9 minimal API backed by SQL Server | The data setup and cleanup are real, and it matches Tracker's stack | A mock service (simpler, but the database step would only be a demonstration) |
 | D3 | A hand-written OData parser for the subset in the brief | Small and explainable; anything unsupported returns 400 | A full OData library (heavier, hides behaviour) |
-| D4 | LocalDB locally, a SQL Server container in the pipeline | No Docker needed on my machine; same scripts and settings in both | Docker everywhere |
+| D4 | LocalDB locally, a SQL Server container in the pipeline | No Docker needed for a local run; same scripts and settings in both | Docker everywhere |
 | D5 | Test data isolated by the prefixes `TEST-` and `pos-test-` | Cleanup by prefix makes the suite re-runnable and safe | Truncate the tables (unsafe on a shared database) |
 | D6 | JUnit XML for the pipeline and an HTML report for people | The brief asks for machine-readable and human-readable output | Other formats |
 | D7 | Settings come from environment variables | No secrets in the repository | Hard-coded values |
@@ -75,7 +75,7 @@ Shared assertion helpers (`expectStatus`, `expectError`, `expectPosition`, `expe
 4. Run `scripts/tests/run-tests.sh`, which builds and starts the API, runs Newman and exits with Newman's exit code. A failed test fails the pipeline.
 5. Always (`condition: always()`): clean up the data, publish the JUnit results to the Tests tab and publish the HTML report as an artifact.
 
-The secrets `API_KEY` and `DB_PASSWORD` exist only in the pipeline's own variables and are mapped into the steps with `env:`. Plain settings (server, database name, user) are in the YAML. 
+The secrets `API_KEY` and `DB_PASSWORD` exist only in the pipeline's own variables and are mapped into the steps with `env:`. Plain settings (base URL, server, database name, user) are variables in the YAML.
 
 **Showing a failing run.** The real suite is fully green, so to show what a failure looks like there is a small separate collection, `tests/demo/failure-demo.postman_collection.json`, with two tests that fail on purpose and one that is skipped. It is not part of the suite. The pipeline has a yes/no option, "Also run the failure demo", which is off by default, so pushes behave as above. When someone runs the pipeline by hand with it ticked, the demo runs after the real tests, the pipeline fails on Newman's exit code, and the failures appear on the Tests tab and in the HTML report. The same demo runs locally with `bash scripts/tests/run-tests.sh demo`.
 
@@ -83,7 +83,7 @@ The secrets `API_KEY` and `DB_PASSWORD` exist only in the pipeline's own variabl
 
 ## Assumptions and behaviours the brief does not state
 
-The brief does not say what unsupported or invalid input returns, so I chose one simple rule and tested it. I asked the recruiter about the date format in `$filter` and the error status codes and did not get an answer, so I proceeded on these assumptions.
+The brief does not say what unsupported or invalid input returns, and it does not fix the date format in `$filter` or the error status codes. For each I chose one simple rule and tested it. These are the assumptions.
 
 - **Status codes**: 401 for a missing or invalid key (D9), 400 for validation errors, 404 for an unknown id, 409 for a duplicate id, 201 for a successful POST. Every error body is `{ "error": "..." }`, including the 404.
 - **Unsupported input**: anything outside the OData subset in the brief returns 400, never a guess.
@@ -136,7 +136,7 @@ Both cover the same test cases, and both were verified against a freshly reset d
 |---|---|---|
 | Requests | 139 | 145 |
 | Assertions in a run | 311 | 323 |
-| Files to edit | 204 small source files, plus `helpers.js` (110 lines) and `build-collection.js` (63 lines) | 1 file (4,090 lines) |
+| Files to edit | about 200 small source files (including `helpers.js`, 110 lines), plus `build-collection.js` (63 lines) | 1 file (4,090 lines) |
 | Build step | Yes: `node build-collection.js` before every run | None |
 | Generated file in git | Yes, 6,092 lines, never edited by hand | Not applicable, the one file is the source |
 | Where the shared helpers live | `helpers.js`, a normal JS file | A collection-level script inside the JSON |
