@@ -8,40 +8,81 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-# Versions in one place, so they are easy to find and change.
 variables:
+  # Tool versions in one place, so they are easy to find and change.
   sqlcmdVersion: v1.10.0
   newmanVersion: 6.2.3
   htmlextraVersion: 1.23.1
+  # Database settings. Plain variables become environment variables in every step.
+  # The password is a secret variable (DB_PASSWORD) created in the pipeline's settings, not in this file.
+  DB_SERVER: localhost
+  DB_NAME: PositionsDb
+  DB_USER: sa
 
-steps:
-  # Get the code from the repo. This is the default, shown here to make it explicit.
-  - checkout: self
+# SQL Server in a Docker container: started before the steps, removed after the job.
+resources:
+  containers:
+    - container: sqlserver
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      env:
+        ACCEPT_EULA: 'Y'
+        MSSQL_SA_PASSWORD: $(DB_PASSWORD)
+      ports:
+        - 1433:1433
 
-  # The agent has several SDKs and "dotnet" would pick the newest (a preview). The API targets .NET 9.
-  - task: UseDotNet@2
-    displayName: Use the .NET 9 SDK
-    inputs:
-      packageType: sdk
-      version: 9.0.x
+jobs:
+  - job: Tests
+    services:
+      sql: sqlserver
+    steps:
+      # Get the code from the repo. This is the default, shown here to make it explicit.
+      - checkout: self
 
-  # sqlcmd is not on the agent. Download the standalone Linux build (one file, no apt repository needed).
-  # "##vso[task.prependpath]" adds the folder to the PATH for the steps that come after this one.
-  - script: |
-      mkdir -p "$HOME/sqlcmd"
-      curl -sSL "https://github.com/microsoft/go-sqlcmd/releases/download/$(sqlcmdVersion)/sqlcmd-linux-amd64.tar.bz2" \
-        | tar -xj -C "$HOME/sqlcmd" sqlcmd
-      echo "##vso[task.prependpath]$HOME/sqlcmd"
-    displayName: Install sqlcmd
+      # The agent has several SDKs and "dotnet" would pick the newest (a preview). The API targets .NET 9.
+      - task: UseDotNet@2
+        displayName: Use the .NET 9 SDK
+        inputs:
+          packageType: sdk
+          version: 9.0.x
 
-  # Pinned versions, so a new release cannot change the result of a run.
-  - script: sudo npm install --global newman@$(newmanVersion) newman-reporter-htmlextra@$(htmlextraVersion)
-    displayName: Install Newman and the htmlextra reporter
+      # sqlcmd is not on the agent. Download the standalone Linux build (one file, no apt repository needed).
+      # "##vso[task.prependpath]" adds the folder to the PATH for the steps that come after this one.
+      - script: |
+          mkdir -p "$HOME/sqlcmd"
+          curl -sSL "https://github.com/microsoft/go-sqlcmd/releases/download/$(sqlcmdVersion)/sqlcmd-linux-amd64.tar.bz2" \
+            | tar -xj -C "$HOME/sqlcmd" sqlcmd
+          echo "##vso[task.prependpath]$HOME/sqlcmd"
+        displayName: Install sqlcmd
 
-  # Check: print the version of every tool the next steps use.
-  - script: |
-      dotnet --version
-      sqlcmd --version
-      newman --version
-      npm ls --global --depth=0
-    displayName: Check the installed tools
+      # Pinned versions, so a new release cannot change the result of a run.
+      - script: sudo npm install --global newman@$(newmanVersion) newman-reporter-htmlextra@$(htmlextraVersion)
+        displayName: Install Newman and the htmlextra reporter
+
+      # Check: print the version of every tool the next steps use.
+      - script: |
+          dotnet --version
+          sqlcmd --version
+          newman --version
+          npm ls --global --depth=0
+        displayName: Check the installed tools
+
+      # SQL Server needs a few seconds to start. Try to log in every 2 seconds, for up to 60 seconds.
+      # Secret variables are not passed to scripts automatically, so the password is mapped in "env".
+      - script: |
+          for i in $(seq 1 30); do
+            sqlcmd -S "$DB_SERVER" -U "$DB_USER" -C -Q "SELECT 1" > /dev/null 2>&1 && exit 0
+            sleep 2
+          done
+          echo "SQL Server did not accept a login within 60 seconds." >&2
+          exit 1
+        displayName: Wait for SQL Server
+        env:
+          SQLCMDPASSWORD: $(DB_PASSWORD)
+
+      # Create the database and tables, then load the seed data. -b makes sqlcmd fail the step on a SQL error.
+      - script: |
+          sqlcmd -S "$DB_SERVER" -U "$DB_USER" -C -b -i db/01_schema.sql
+          sqlcmd -S "$DB_SERVER" -U "$DB_USER" -C -b -d "$DB_NAME" -i db/02_seed.sql
+        displayName: Apply the schema and the seed data
+        env:
+          SQLCMDPASSWORD: $(DB_PASSWORD)
