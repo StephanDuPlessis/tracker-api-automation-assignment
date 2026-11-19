@@ -131,5 +131,4 @@ To change the authored suite, edit only the files under `tests/authored/src/` an
 ## More
 
 - [SOLUTION.md](SOLUTION.md): design, trade-offs and assumptions.
-- [docs/BUILD_NOTES.md](docs/BUILD_NOTES.md): decisions, issues and fixes.
 - [docs/AI_PROMPTS.md](docs/AI_PROMPTS.md): the prompts used with AI tools.

@@ -175,3 +175,4 @@ scripts/*.local.ps1
 # Private study notes (not part of the submission)
 docs/CODE_NOTES.md
 docs/notes/
+docs/BUILD_NOTES.md
