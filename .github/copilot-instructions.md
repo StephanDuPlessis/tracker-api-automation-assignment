@@ -33,7 +33,7 @@ Take-home assignment for Tracker Connect (API Automation Tester). Goal: automate
 
 ```
 README.md  SOLUTION.md  docker-compose.yml  azure-pipelines.yml  .env.example
-docs/BUILD_NOTES.md
+docs/notes/BUILD_NOTES.md
 src/PositionsApi/
 db/01_schema.sql  db/02_seed.sql  db/99_cleanup.sql
 tests/positions.postman_collection.json  tests/local.postman_environment.json
@@ -62,7 +62,7 @@ Microsoft-hosted Ubuntu agent. Steps: start SQL Server, apply schema and seed, b
 
 # Working rules
 
-- Work in small steps and only do what is asked in the current prompt. After each step, summarise what was built and why in a few lines, and suggest a matching entry for `docs/BUILD_NOTES.md` (decision, issue and fix, or correction). Do not edit BUILD_NOTES.md unless asked.
+- Work in small steps and only do what is asked in the current prompt. After each step, summarise what was built and why in a few lines, and suggest a matching entry for `docs/notes/BUILD_NOTES.md` (decision, issue and fix, or correction). Do not edit BUILD_NOTES.md unless asked.
 - Prefer simple, explainable code over clever code. Explain any non-obvious choice.
 - Run and verify what you build (`dotnet build`, `sqlcmd`, `newman run`) and report real output.
 - Flag anything in the brief that is ambiguous instead of silently guessing.
@@ -70,4 +70,4 @@ Microsoft-hosted Ubuntu agent. Steps: start SQL Server, apply schema and seed, b
 - Prompt log: every valid prompt the owner gives an AI tool (Copilot, Claude Code, Claude chat) that leads to real work on this repo must be added to `docs/AI_PROMPTS.md`. Valid means it changed, checked or decided something in the project. Skip chit-chat, tool-usage questions and exact duplicates (note a duplicate in one line instead). For each entry record the tool, the prompt (trim long ones with "[...]"), what the AI gave, what the owner did with it and the outcome. Never write that the owner did something the AI did. Never put secrets or personal details in the log. Add the entry in the same task, before finishing.
 
 ## Handoff
-At the start of a task read `docs/HANDOFF.md`, and at the end update it. Do not edit `docs/BUILD_NOTES.md` unless asked.
+At the start of a task read `docs/notes/HANDOFF.md`, and at the end update it. Do not edit `docs/notes/BUILD_NOTES.md` unless asked.
