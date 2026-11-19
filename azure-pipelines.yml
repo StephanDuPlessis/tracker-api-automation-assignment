@@ -95,3 +95,30 @@ jobs:
         env:
           API_KEY: $(API_KEY)
           DB_PASSWORD: $(DB_PASSWORD)
+
+                # The next three steps use "condition: always()", so they run even when the tests failed.
+
+      # Remove the test data (everything with the TEST- and pos-test- prefixes).
+      - script: sqlcmd -S "$DB_SERVER" -U "$DB_USER" -C -b -d "$DB_NAME" -i db/99_cleanup.sql
+        displayName: Clean up the test data
+        condition: always()
+        env:
+          SQLCMDPASSWORD: $(DB_PASSWORD)
+
+      # Show the Newman results on the run's Tests tab (Newman writes them as JUnit XML).
+      # The "Run the API tests" step already fails the pipeline when a test fails.
+      - task: PublishTestResults@2
+        displayName: Publish the test results
+        condition: always()
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: tests/reports/newman-junit.xml
+          testRunTitle: API tests (Newman)
+
+      # Keep the reports folder (the HTML report, the JUnit XML and the API log) as a downloadable artifact.
+      - task: PublishPipelineArtifact@1
+        displayName: Publish the HTML report
+        condition: always()
+        inputs:
+          targetPath: tests/reports
+          artifact: test-reports
