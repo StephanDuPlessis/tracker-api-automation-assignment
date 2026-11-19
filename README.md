@@ -26,6 +26,7 @@ A missing or wrong key returns 401. Lists come back as `{ "value": [...], "@odat
 - [.NET 9 SDK](https://dotnet.microsoft.com/download)
 - SQL Server. On Windows the scripts default to LocalDB (`(localdb)\MSSQLLocalDB`). Any SQL Server works if you change the settings below.
 - `sqlcmd` on your PATH
+- Docker (optional): only needed for the route without LocalDB, see "Without LocalDB (Docker)" below
 - [Node.js](https://nodejs.org/), then Newman and the HTML reporter:
 
   ```
@@ -140,7 +141,7 @@ All test data uses the prefixes `TEST-` for device ids and `pos-test-` for posit
 
 `azure-pipelines.yml` runs on every push to `main` on a Microsoft-hosted Ubuntu agent. It starts SQL Server as a service container, applies the schema and seed, builds and starts the API, installs Newman and the HTML reporter, and runs `scripts/tests/run-tests.sh`. A failing test fails the pipeline. Cleanup always runs, the JUnit results appear on the Tests tab, and the HTML report is published as an artifact.
 
-The base URL, server, database name and user are plain variables in the YAML. The secrets `API_KEY` and `DB_PASSWORD` are stored in the pipeline's own variables, never in the repository.
+The pipeline does not use `docker-compose.yml`: it defines its own SQL Server container in `azure-pipelines.yml` (same image), which Azure starts and removes for each run. The base URL, server, database name and user are plain variables in the YAML. The secrets `API_KEY` and `DB_PASSWORD` are stored in the pipeline's own variables, never in the repository.
 
 ## Layout
 
