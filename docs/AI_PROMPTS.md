@@ -371,6 +371,22 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 32. The Azure DevOps pipeline
+
+**Prompts:**
+> yes, give me the first piece [a first pipeline that only shows the tools on the agent]
+> Give me the piece 3 file again
+> What are the other steps I still need to do, I only added the secret
+> I created my own key, what is next?
+> Where do I insert the steps?
+> [pasted screenshots of the runs, the repository selection, the GitHub app authorisation, the variable dialog and each step's log]
+
+**What the AI gave:** The pipeline in five small pieces. Piece 1 showed what the Ubuntu agent already has; the log showed `sqlcmd` missing, several .NET SDKs (including an 11 preview that `dotnet` would pick) and Node 24, so piece 2 pinned the .NET 9 SDK, installed a standalone `sqlcmd` build and installed Newman and the htmlextra reporter at fixed versions. It looked up the release files on GitHub instead of guessing the download name, and explained why it avoided the apt route (not documented for the agent's very new Ubuntu version). Piece 3 added SQL Server as a service container, a wait loop, and the schema and seed, with the password in a secret variable. Piece 4 ran `scripts/tests/run-tests.sh`. Piece 5 added cleanup, the JUnit results and the report artifact, all under `condition: always()`. It explained the YAML and the parts I had not used before (`services`, `##vso[task.prependpath]`, mapping secret variables with `env:`), warned that a missing `API_KEY` variable would pass silently with a literal key, told me not to click the editor's Save when it would commit, and updated `docs/HANDOFF.md`.
+**What I did:** Created the Azure DevOps organisation and project, connected the GitHub repository and authorised the Azure Pipelines app, typed each piece into `azure-pipelines.yml`, created the secret variables `DB_PASSWORD` and `API_KEY` (my own values), committed and pushed each piece, and sent the logs back. I renamed the file from `.yaml` to `.yml` to match the planned layout.
+**Outcome:** Each push runs the whole suite on a Microsoft-hosted agent. The last run passed in about 1.5 minutes with 311 assertions and 0 failed, showed "100% passed" on the Tests tab, and published the reports as an artifact. A deliberately failing pipeline run has not been tried yet.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
