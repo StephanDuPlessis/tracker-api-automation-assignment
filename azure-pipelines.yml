@@ -8,22 +8,40 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+# Versions in one place, so they are easy to find and change.
+variables:
+  sqlcmdVersion: v1.10.0
+  newmanVersion: 6.2.3
+  htmlextraVersion: 1.23.1
+
 steps:
   # Get the code from the repo. This is the default, shown here to make it explicit.
   - checkout: self
 
-  # First check only: print the tools the agent already has, so later steps do not guess.
+  # The agent has several SDKs and "dotnet" would pick the newest (a preview). The API targets .NET 9.
+  - task: UseDotNet@2
+    displayName: Use the .NET 9 SDK
+    inputs:
+      packageType: sdk
+      version: 9.0.x
+
+  # sqlcmd is not on the agent. Download the standalone Linux build (one file, no apt repository needed).
+  # "##vso[task.prependpath]" adds the folder to the PATH for the steps that come after this one.
   - script: |
-      echo "--- OS"
-      head -2 /etc/os-release
-      echo "--- dotnet SDKs"
-      dotnet --list-sdks
-      echo "--- node and npm"
-      node --version
-      npm --version
-      echo "--- sqlcmd"
-      which sqlcmd || echo "sqlcmd is not on the PATH"
-      ls /opt/mssql-tools*/bin 2>/dev/null || echo "no /opt/mssql-tools* folder"
-      echo "--- docker"
-      docker --version
-    displayName: Show the tools on the agent
+      mkdir -p "$HOME/sqlcmd"
+      curl -sSL "https://github.com/microsoft/go-sqlcmd/releases/download/$(sqlcmdVersion)/sqlcmd-linux-amd64.tar.bz2" \
+        | tar -xj -C "$HOME/sqlcmd" sqlcmd
+      echo "##vso[task.prependpath]$HOME/sqlcmd"
+    displayName: Install sqlcmd
+
+  # Pinned versions, so a new release cannot change the result of a run.
+  - script: sudo npm install --global newman@$(newmanVersion) newman-reporter-htmlextra@$(htmlextraVersion)
+    displayName: Install Newman and the htmlextra reporter
+
+  # Check: print the version of every tool the next steps use.
+  - script: |
+      dotnet --version
+      sqlcmd --version
+      newman --version
+      npm ls --global --depth=0
+    displayName: Check the installed tools
