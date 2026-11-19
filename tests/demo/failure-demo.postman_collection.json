@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Failure demo",
+    "description": "NOT part of the real suite. Tests that fail and are skipped on purpose, to show what a failing run looks like in the CLI, the HTML report and the pipeline's Tests tab. Run with: bash scripts/tests/run-tests.sh demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "DEMO failing tests",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// This one passes, so the report shows a pass next to the failures.",
+              "pm.test('Status is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "// These two fail on purpose: the seeded position really is TEST-D-10001 and the status really is 200.",
+              "pm.test('DEMO deliberate failure: status is 404', function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test('DEMO deliberate failure: deviceId is TEST-D-99999', function () {",
+              "    pm.expect(pm.response.json().deviceId).to.equal('TEST-D-99999');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Api-Key", "value": "{{apiKey}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/positions/pos-test-10001-01",
+          "host": ["{{baseUrl}}"],
+          "path": ["positions", "pos-test-10001-01"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DEMO skipped test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// pm.test.skip does not run the function. The CLI and the HTML report show it as skipped.",
+              "// A known limitation: the API rounds extra decimals instead of rejecting them, so this expectation is parked.",
+              "pm.test.skip('DEMO skipped: latitude with more than 6 decimals is rejected (the API rounds it instead)', function () {",
+              "    pm.expect(pm.response.code).to.equal(400);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-Api-Key", "value": "{{apiKey}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/positions/pos-test-10001-01",
+          "host": ["{{baseUrl}}"],
+          "path": ["positions", "pos-test-10001-01"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

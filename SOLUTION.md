@@ -75,7 +75,11 @@ Shared assertion helpers (`expectStatus`, `expectError`, `expectPosition`, `expe
 4. Run `scripts/tests/run-tests.sh`, which builds and starts the API, runs Newman and exits with Newman's exit code. A failed test fails the pipeline.
 5. Always (`condition: always()`): clean up the data, publish the JUnit results to the Tests tab and publish the HTML report as an artifact.
 
-The secrets `API_KEY` and `DB_PASSWORD` exist only in the pipeline's own variables and are mapped into the steps with `env:`. Plain settings (server, database name, user) are in the YAML. Not tried: a deliberately failing pipeline run. A failing local run gives exit code 1, which is what fails the pipeline.
+The secrets `API_KEY` and `DB_PASSWORD` exist only in the pipeline's own variables and are mapped into the steps with `env:`. Plain settings (server, database name, user) are in the YAML. 
+
+**Showing a failing run.** The real suite is fully green, so to show what a failure looks like there is a small separate collection, `tests/demo/failure-demo.postman_collection.json`, with two tests that fail on purpose and one that is skipped. It is not part of the suite. The pipeline has a yes/no option, "Also run the failure demo", which is off by default, so pushes behave as above. When someone runs the pipeline by hand with it ticked, the demo runs after the real tests, the pipeline fails on Newman's exit code, and the failures appear on the Tests tab and in the HTML report. The same demo runs locally with `bash scripts/tests/run-tests.sh demo`.
+
+**Skipped tests.** Newman supports skipping a test (`pm.test.skip`) and shows it as `[skipped]` in the console and the HTML report. Its JUnit export, however, writes a skipped test as an ordinary passing test, so the pipeline's Tests tab counts it as passed. For that reason the real suite has no skipped tests, and the one in the demo is labelled clearly.
 
 ## Assumptions and behaviours the brief does not state
 

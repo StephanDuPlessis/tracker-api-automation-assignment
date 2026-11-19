@@ -100,6 +100,16 @@ bash scripts/tests/run-tests.sh
 
 `scripts/tests/run-tests-2.ps1` runs the Postman-export version of the suite the same way. It has no build step, and its reports are named `newman-export-*`. The pipeline does not run it.
 
+### The failure demo
+
+The real suite is green, so to see what a failing run looks like there is a small separate collection in `tests/demo/` with two tests that fail on purpose and one that is skipped:
+
+```
+bash scripts/tests/run-tests.sh demo
+```
+
+It resets the data, starts the API, runs the demo, and exits with 1 because of the deliberate failures. Its reports are `tests/reports/newman-demo-junit.xml` and `newman-demo-report.html`. In the pipeline it only runs when you start the pipeline by hand and tick "Also run the failure demo".
+
 ## How test data is kept apart
 
 All test data uses the prefixes `TEST-` for device ids and `pos-test-` for position ids. Cleanup (`db/99_cleanup.sql`) deletes by those prefixes, then the seed (`db/02_seed.sql`) reloads 3 devices and 12 positions over two days, so counts and ordering are the same on every run.
@@ -120,6 +130,7 @@ tests/authored/                       the suite the pipeline runs
   build-collection.js                 merges the small files into one collection
   positions.postman_collection.json   generated, never edited by hand
 tests/postman-export/                 the second option: one collection file
+tests/demo/                           a small collection with deliberate failures and a skipped test
 tests/reports/                        test reports (gitignored)
 scripts/tests/                        run-tests.ps1, run-tests.sh, run-tests-2.ps1
 azure-pipelines.yml                   the pipeline

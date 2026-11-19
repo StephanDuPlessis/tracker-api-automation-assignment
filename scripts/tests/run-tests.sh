@@ -36,6 +36,14 @@ export BASE_URL DB_SERVER DB_NAME   # the API reads these too, so they must be e
 # The API refuses to start without a key, so stop early with a clear message.
 : "${API_KEY:?API_KEY is not set. Put it in .env or set it as a pipeline variable.}"
 
+# Which suite to run. No argument runs the real suite. "demo" runs the failure demo instead,
+# a small collection with tests that fail and are skipped on purpose (see tests/demo/).
+suite="${1:-authored}"
+case "$suite" in
+  authored|demo) ;;
+  *) echo "Unknown suite '$suite'. Use no argument, or 'demo'." >&2; exit 1 ;;
+esac
+
 # --- 1. Reset the test data so the suite can be re-run ---------------------------------------
 # Delete everything with the TEST- and pos-test- prefixes, then reload the seed.
 # Windows authentication when there is no DB_USER (your own machine). SQL authentication when there
@@ -89,19 +97,27 @@ else
 fi
 
 # --- 3. Build the collection and run it -----------------------------------------------------------
-# Merge the small source files into one collection.
-node tests/authored/build-collection.js
+if [ "$suite" = "demo" ]; then
+  # The demo is one finished file, so there is nothing to build. Its reports get their own names.
+  collection=tests/demo/failure-demo.postman_collection.json
+  report=newman-demo
+else
+  # Merge the small source files into one collection.
+  node tests/authored/build-collection.js
+  collection=tests/authored/positions.postman_collection.json
+  report=newman
+fi
 
 # JUnit is for machines (the pipeline), HTML is for people. The reports folder already exists (created above).
 # "|| newman_exit=$?" keeps the script going when Newman fails, so we can still return its exit code below.
 newman_exit=0
-newman run tests/authored/positions.postman_collection.json \
+newman run "$collection" \
   -e tests/authored/environments/local.postman_environment.json \
   --env-var "baseUrl=$BASE_URL" \
   --env-var "apiKey=$API_KEY" \
   --reporters "cli,junit,htmlextra" \
-  --reporter-junit-export tests/reports/newman-junit.xml \
-  --reporter-htmlextra-export tests/reports/newman-report.html \
+  --reporter-junit-export "tests/reports/$report-junit.xml" \
+  --reporter-htmlextra-export "tests/reports/$report-report.html" \
   || newman_exit=$?
 
 # --- 4. The result ---------------------------------------------------------------------------------

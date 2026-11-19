@@ -4,6 +4,13 @@
 trigger:
   - main
 
+# Choices shown when the pipeline is run by hand ("Run pipeline"). Pushes always use the default.
+parameters:
+  - name: runFailureDemo
+    displayName: Also run the failure demo (this run will fail on purpose)
+    type: boolean
+    default: false
+
 # A Microsoft-hosted Linux agent (a fresh virtual machine for every run).
 pool:
   vmImage: ubuntu-latest
@@ -99,6 +106,16 @@ jobs:
           API_KEY: $(API_KEY)
           DB_PASSWORD: $(DB_PASSWORD)
 
+      # Only when "Also run the failure demo" is ticked: run the demo collection, which has tests that
+      # fail and are skipped on purpose. It fails this step and the pipeline, to show what a failing run
+      # looks like. The steps below still publish everything, because they use "condition: always()".
+      - ${{ if eq(parameters.runFailureDemo, true) }}:
+          - script: bash scripts/tests/run-tests.sh demo
+            displayName: Run the failure demo (fails on purpose)
+            env:
+              API_KEY: $(API_KEY)
+              DB_PASSWORD: $(DB_PASSWORD)
+
                 # The next three steps use "condition: always()", so they run even when the tests failed.
 
       # Remove the test data (everything with the TEST- and pos-test- prefixes).
@@ -117,6 +134,16 @@ jobs:
           testResultsFormat: JUnit
           testResultsFiles: tests/reports/newman-junit.xml
           testRunTitle: API tests (Newman)
+
+      # The failure demo's results, shown as their own test run. Only added when the demo is ticked.
+      - ${{ if eq(parameters.runFailureDemo, true) }}:
+          - task: PublishTestResults@2
+            displayName: Publish the failure demo results
+            condition: always()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: tests/reports/newman-demo-junit.xml
+              testRunTitle: Failure demo (deliberate failures)
 
       # Keep the reports folder (the HTML report, the JUnit XML and the API log) as a downloadable artifact.
       - task: PublishPipelineArtifact@1
