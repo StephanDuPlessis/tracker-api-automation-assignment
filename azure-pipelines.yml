@@ -86,3 +86,12 @@ jobs:
         displayName: Apply the schema and the seed data
         env:
           SQLCMDPASSWORD: $(DB_PASSWORD)
+
+      # Run the whole suite: reset the data, start the API, run Newman, stop the API.
+      # The script's exit code is Newman's, so a failed test fails this step and the pipeline.
+      # Secret variables are not passed to scripts automatically, so both are mapped in "env".
+      - script: bash scripts/tests/run-tests.sh
+        displayName: Run the API tests
+        env:
+          API_KEY: $(API_KEY)
+          DB_PASSWORD: $(DB_PASSWORD)
