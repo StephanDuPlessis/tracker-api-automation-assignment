@@ -39,7 +39,11 @@ A missing or wrong key returns 401. Lists come back as `{ "value": [...], "@odat
 All settings are environment variables. Locally they come from a `.env` file, which is gitignored. Variables that are already set in your terminal win over `.env`.
 
 1. Copy `.env.example` to `.env`.
-2. Replace `CHANGE_ME` in `API_KEY` with a key of your own. The API refuses to start without one.
+2. Replace `CHANGE_ME` in `API_KEY` with a key of your own. The API refuses to start without one. Any text works. To generate a random one:
+
+   ```
+   node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+   ```
 
 | Variable | Meaning |
 |---|---|
@@ -104,7 +108,9 @@ From the repository root, in a normal PowerShell terminal (not the PowerShell IS
 
 The script resets the test data, starts the API if it is not already running (and stops it afterwards), builds the collection, runs Newman, and exits with Newman's exit code: 0 when every test passed, 1 when any failed. It can be run again straight away with no manual steps.
 
-Reports are written to `tests/reports/` (gitignored): a JUnit XML file for machines and an HTML report for people.
+A good run ends with exit code 0 and a Newman summary of 155 requests and 311 assertions, 0 failed.
+
+Reports are written to `tests/reports/` (gitignored): a JUnit XML file for machines (`newman-junit.xml`) and an HTML report for people (`newman-report.html`, open it in a browser).
 
 On Linux or in Git Bash, use the bash equivalent, which does the same steps and is what the pipeline runs:
 
@@ -118,7 +124,7 @@ bash scripts/tests/run-tests.sh
 
 ### The failure demo
 
-The real suite is green, so to see what a failing run looks like there is a small separate collection in `tests/demo/` with two tests that fail on purpose and one that is skipped:
+The real suite is green, so to see what a failing run looks like there is a small separate collection in `tests/demo/` with two tests that fail on purpose and one that is skipped. The command is bash only, so on Windows run it in Git Bash:
 
 ```
 bash scripts/tests/run-tests.sh demo
@@ -134,7 +140,7 @@ All test data uses the prefixes `TEST-` for device ids and `pos-test-` for posit
 
 `azure-pipelines.yml` runs on every push to `main` on a Microsoft-hosted Ubuntu agent. It starts SQL Server as a service container, applies the schema and seed, builds and starts the API, installs Newman and the HTML reporter, and runs `scripts/tests/run-tests.sh`. A failing test fails the pipeline. Cleanup always runs, the JUnit results appear on the Tests tab, and the HTML report is published as an artifact.
 
-The secrets `API_KEY` and `DB_PASSWORD` are stored in the pipeline's own variables, never in the repository.
+The base URL, server, database name and user are plain variables in the YAML. The secrets `API_KEY` and `DB_PASSWORD` are stored in the pipeline's own variables, never in the repository.
 
 ## Layout
 
@@ -151,7 +157,7 @@ tests/reports/                        test reports (gitignored)
 scripts/tests/                        run-tests.ps1, run-tests.sh, run-tests-2.ps1
 azure-pipelines.yml                   the pipeline
 docker-compose.yml                    SQL Server in a container, for machines without LocalDB
-docs/                                 build notes and the AI prompt log
+docs/                                 the AI prompt log and test evidence
 ```
 
 To change the authored suite, edit only the files under `tests/authored/src/` and run the tests again, because the run script rebuilds the collection.
