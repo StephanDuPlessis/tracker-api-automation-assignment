@@ -417,6 +417,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 36. The rest of SOLUTION.md
+
+**Tool:** Claude Code
+**Prompt:** "Start on the rest of SOLUTION.md"
+**What the AI gave:** Read BUILD_NOTES (decisions D1 to D24, assumptions) and drafted the remaining sections around the existing comparison: approach, test strategy by folder, test data management, the pipeline, assumptions and behaviours the brief does not state, known limitations, how AI tools were used, and "decided not to do". It listed the claims that only I can confirm.
+**What I did:** Asked for the draft. Review and corrections are still to do.
+**Outcome:** `SOLUTION.md` now has a full first draft. Not yet checked by me.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
