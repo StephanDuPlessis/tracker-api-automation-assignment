@@ -1,0 +1,29 @@
+# Azure Pipelines: runs the API test suite on a Microsoft-hosted Ubuntu agent.
+
+# Run on every push to main.
+trigger:
+  - main
+
+# A Microsoft-hosted Linux agent (a fresh virtual machine for every run).
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  # Get the code from the repo. This is the default, shown here to make it explicit.
+  - checkout: self
+
+  # First check only: print the tools the agent already has, so later steps do not guess.
+  - script: |
+      echo "--- OS"
+      head -2 /etc/os-release
+      echo "--- dotnet SDKs"
+      dotnet --list-sdks
+      echo "--- node and npm"
+      node --version
+      npm --version
+      echo "--- sqlcmd"
+      which sqlcmd || echo "sqlcmd is not on the PATH"
+      ls /opt/mssql-tools*/bin 2>/dev/null || echo "no /opt/mssql-tools* folder"
+      echo "--- docker"
+      docker --version
+    displayName: Show the tools on the agent
