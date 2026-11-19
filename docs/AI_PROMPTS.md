@@ -427,6 +427,26 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 37. What to do next, and examples of failed and skipped tests
+
+**Tool:** Claude Code
+**Prompt:** "1. What do you reccomend and why? 2. We need examples of failed tests and skipped tests"
+**What the AI gave:** A recommendation for each open decision (OData option-name case, `validation-check.ps1`, the AI-tooling file mentions, `docker-compose.yml`) with reasons. For failed and skipped tests it first tested Newman 6.2.3 with a throwaway collection outside the repo: `pm.test.skip` is supported and shows as `[skipped]` in the CLI output, but the JUnit export lists a skipped test as a normal passing test case, so the Azure DevOps Tests tab would count it as passed. It then proposed keeping the real suite green and adding a separate demo collection with a deliberately failing and a skipped test, run only through an optional pipeline parameter.
+**What I did:** Asked the two questions. The choice of where the demo tests live is still to decide.
+**Outcome:** Nothing in the repo changed in this step.
+
+---
+
+### 38. The failure demo collection and pipeline parameter
+
+**Tool:** Claude Code
+**Prompt:** "Yes, do the demo collection and pipeline parameter"
+**What the AI gave:** `tests/demo/failure-demo.postman_collection.json` (one passing test, two deliberate failures and one skipped test against the seeded data); an optional `demo` argument for `scripts/tests/run-tests.sh` instead of a third run script, with the default behaviour unchanged; and in `azure-pipelines.yml` a boolean parameter `runFailureDemo` (default false) that adds a demo step and a separate test-results step only when ticked. It also added a README section, a layout line and two SOLUTION.md paragraphs (the failing run, and that a skipped test shows as passed in the JUnit export). It ran the demo locally in Git Bash (exit code 1, 4 assertions, 2 failed, 1 skipped, API stopped), a bad argument (exit code 1 with a message) and the normal run (exit code 0, 311 assertions, 0 failed).
+**What I did:** Approved the design. Running the pipeline with the option ticked and checking the result is still to do.
+**Outcome:** Verified locally only. Not yet verified in the pipeline.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
