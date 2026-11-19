@@ -34,18 +34,18 @@ The brief asks for an automated test suite for a Positions API, test data manage
 | D14 | Timestamps returned in UTC as whole seconds with a `Z` | Matches the format in the brief | Default .NET output with seven fractional digits |
 | D15 | The API refuses to start without `API_KEY` | A missing key fails loudly instead of accepting requests | A built-in default key |
 | D16 | POST returns 400 for an id over 100 characters, a deviceId over 50, speedKph outside 0 to 1000 and headingDeg outside 0 to 360 | A before-fix run showed oversized values crashing with a 500 and nonsense values saved with a 201 | Let the database reject it; silently clamp values |
-| D17 | Every prompt that led to real work is logged in `docs/AI_PROMPTS.md` | The brief asks for the prompts and my reasoning | Rebuild the log from chat exports at the end |
+| D17 | Every prompt that led to real work is logged in `docs/AI_PROMPTS.md` | The brief asks for the prompts and my reasoning | Keep no log and only summarise the AI use at the end |
 | D18 | One `.env` file with a committed `.env.example`; the API builds its connection string from the DB variables unless `DB_CONNECTION_STRING` is set | `sqlcmd` cannot use a connection string, so the scripts need the separate variables anyway | Connection string only |
 | D19 | Both Postman suites cover the same test cases | Otherwise a difference in size or effort could be a difference in what is tested | Keep them different |
 | D20 | Keep a second collection in the plain Postman export style next to the authored suite | Lets me compare the two ways of building a suite with evidence | Only the authored suite |
 | D21 | Install `sqlcmd` on the agent from the standalone go-sqlcmd release | The agent has no `sqlcmd`, and the apt package is documented only for older Ubuntu versions | The apt package; running `sqlcmd` inside the container |
 | D22 | Pin the .NET 9 SDK with `UseDotNet@2` | The agent has several SDKs and `dotnet` picks the newest | Rely on the image |
 | D23 | SQL Server as a service container with the password in a secret variable; cleanup and publishing under `condition: always()` | Nothing is left behind, secrets stay out of logs and the repo, and a failed run still publishes its report | `docker run` in a script; a shared database |
-| D24 | `run-tests-2.ps1` is a separate copy of `run-tests.ps1` | The two options are compared, so each has its own complete run script. The cost is about 70 duplicated lines | A shared `common.ps1`; one script with a switch |
+| D24 | `run-tests-2.ps1` is a separate copy of `run-tests.ps1` | The two options are compared, so each has its own complete run script. The cost is about 85 duplicated lines | A shared `common.ps1`; one script with a switch |
 
 ## Test strategy
 
-The suite has five folders. The authored suite (the one the pipeline runs) has 139 requests and 311 assertions in a run.
+The suite has five folders. The authored suite (the one the pipeline runs) has 139 requests and 311 assertions in a run. Newman's run summary shows 155 requests, because it also counts the GET requests that the helpers send.
 
 | Folder | Requests | What it proves |
 |---|---|---|
@@ -173,7 +173,7 @@ The request and assertion counts differ a little because wording and some test v
 
 ### The two run scripts
 
-`run-tests.ps1` and `run-tests-2.ps1` are about 97 lines each. I kept them as separate copies on purpose so the options compare like for like. The only differences are the build step, the collection and environment files, and the report names. The cost is about 70 duplicated lines.
+`run-tests.ps1` and `run-tests-2.ps1` are about 97 lines each. I kept them as separate copies on purpose so the options compare like for like. The only differences are the build step, the collection and environment files, and the report names. The cost is about 85 duplicated lines.
 
 ### Which one the pipeline runs
 
@@ -181,11 +181,12 @@ Option A. Small source files give readable diffs and a shared helpers file, and 
 
 ### Not measured
 
-How long each option took to write, and run time (both finish in about 15 seconds locally, so there is no real difference).
+How long each option took to write, and run time (I timed both locally at about 18 seconds for A and 15 for B, including starting the API, so there is no real difference).
 
 ## How I used AI tools
 
-**What I used AI for.** Three tools: Claude in chat for planning and the decision log; GitHub Copilot in VS Code for the SQL scripts, the first version of the API and the validation limits (D16); and Claude Code in VS Code for the test suites, the run scripts, the pipeline and the documentation. For many parts I copied the code in small pieces and went through every line with the AI's explanation so I could explain it, for example the pipeline file, the run scripts and the first requests of each kind.
+**What I used AI for.** Three tools: Claude in chat for planning and the decision log; GitHub Copilot in VS Code for the SQL scripts, the first version of the API and the validation limits (D16); and Claude Code in VS Code for the test suites, the run scripts, the pipeline and the documentation. For many parts I copied the code in small pieces and went through every line with the AI's explanation so I could explain it, for example the pipeline file, the run scripts and the first requests of each kind. I kept the log of prompts as I went and tidied it at the end from the chat exports.
+
 **What I reviewed and ran.** I read and ran what the tools produced: the SQL scripts against LocalDB (schema twice, seed, cleanup, seed again, with the counts checked), the API with hand-made requests, and every suite and run script before relying on it.
 
 **What I corrected.**
@@ -204,8 +205,8 @@ Every prompt that led to real work is logged in [docs/AI_PROMPTS.md](docs/AI_PRO
 ## Decided not to do
 
 - **A full OData library**: heavier and hides the behaviour I want to test (D3).
-- **Unit tests for the API**: the brief asks for API automation, and the Postman suite covers the behaviour from the outside.
-- **Swagger and logging**: not needed to test the API, and more to explain.
+- **Unit tests for the API**: the brief asks for API automation, not tests of the API's own code. The Postman suite tests the behaviour from the outside, including the hand-written OData parser through the results a client sees.
+- **Swagger and logging**: not needed to test the API. The contract is fixed by the brief and pinned by the tests, and failures are already visible in the Newman, JUnit and HTML reports. Both would add code outside the brief.
 - **A 415 for a wrong Content-Type**, and **handling a database outage** with a friendly error: edge cases outside the brief.
 - **A shared run-script file** for the two PowerShell scripts: they are kept separate on purpose so the two Postman options compare like for like (D24).
 - **A Dockerfile, and running the API in a container.** The database uses the official SQL Server image as it is, so there is nothing to build, and `docker-compose.yml` only starts that image. The API runs directly with `dotnet`, locally and on the pipeline agent. Containerising it would add a Dockerfile and a second compose service that the brief does not ask for, and that is more to explain and maintain.

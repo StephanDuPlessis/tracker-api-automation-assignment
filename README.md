@@ -109,7 +109,7 @@ From the repository root, in a normal PowerShell terminal (not the PowerShell IS
 
 The script resets the test data, starts the API if it is not already running (and stops it afterwards), builds the collection, runs Newman, and exits with Newman's exit code: 0 when every test passed, 1 when any failed. It can be run again straight away with no manual steps.
 
-A good run ends with exit code 0 and a Newman summary of 155 requests and 311 assertions, 0 failed.
+A good run ends with exit code 0 and a Newman summary of 155 requests and 311 assertions, 0 failed. (Newman also counts the GET requests that the helpers send, so the total is higher than the 139 requests in the collection.)
 
 Reports are written to `tests/reports/` (gitignored): a JUnit XML file for machines (`newman-junit.xml`) and an HTML report for people (`newman-report.html`, open it in a browser).
 
@@ -155,7 +155,9 @@ tests/authored/                       the suite the pipeline runs
 tests/postman-export/                 the second option: one collection file
 tests/demo/                           a small collection with deliberate failures and a skipped test
 tests/reports/                        test reports (gitignored)
+scripts/                              start-api.ps1 (start the API by hand), load-env.ps1 (reads .env)
 scripts/tests/                        run-tests.ps1, run-tests.sh, run-tests-2.ps1
+scripts/tests/validation-check.ps1    the 14-case validation check behind decision D16 (needs the API running)
 azure-pipelines.yml                   the pipeline
 docker-compose.yml                    SQL Server in a container, for machines without LocalDB
 docs/                                 the AI prompt log and test evidence
