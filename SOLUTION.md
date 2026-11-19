@@ -185,13 +185,12 @@ How long each option took to write, and run time (both finish in about 15 second
 
 ## How I used AI tools
 
-**What I used AI for.** Three tools: Claude in chat for planning and the decision log; GitHub Copilot in VS Code for the SQL scripts, the first version of the API and the validation limits (D16); and Claude Code in VS Code for the test suites, the run scripts, the pipeline and the documentation. For some parts I typed the code myself in small pieces so I could explain it, for example the pipeline file and the first requests of each kind.
-
+**What I used AI for.** Three tools: Claude in chat for planning and the decision log; GitHub Copilot in VS Code for the SQL scripts, the first version of the API and the validation limits (D16); and Claude Code in VS Code for the test suites, the run scripts, the pipeline and the documentation. For many parts I copied the code in small pieces and went through every line with the AI's explanation so I could explain it, for example the pipeline file, the run scripts and the first requests of each kind.
 **What I reviewed and ran.** I read and ran what the tools produced: the SQL scripts against LocalDB (schema twice, seed, cleanup, seed again, with the counts checked), the API with hand-made requests, and every suite and run script before relying on it.
 
 **What I corrected.**
 - The API returned timestamps as `...56.0000000Z` instead of the brief's `...56Z`. I found it in my own hand tests and had it fixed (D14).
-- I found the validation gap myself with a before-fix test run (oversized values returned a 500, nonsense values were saved), wrote the limits and proved the fix with before and after evidence in `docs/evidence/` (D16).
+- I found the validation gap myself with a before-fix test run (oversized values returned a 500, nonsense values were saved), had Copilot add the limits and proved the fix with before and after evidence in `docs/evidence/` (D16).
 - Claude chat predicted that a very long id or deviceId would cause a 500. My check showed they were silently truncated and saved with a 201 (`docs/evidence/truncation-check.txt`), so that prediction was wrong.
 - A real API key had been committed by mistake in `.env.example`. I replaced it with a placeholder and rotated the key. The pipeline's secret was a different value and was never exposed.
 
