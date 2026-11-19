@@ -467,6 +467,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 41. Read-through of SOLUTION.md and four fixes
+
+**Tool:** Claude Code
+**Prompts:** "Walk me through SOLUTION.md"; then "Apply fixes 1 to 4, with number 4 I chose".
+**What the AI gave:** A section-by-section walk through `SOLUTION.md`, flagging four things to fix: the "No Docker needed on my machine" wording (Docker is installed now), `BASE_URL` missing from the list of plain pipeline settings, "204 small source files" counting `helpers.js` twice, and a sentence claiming I had asked the recruiter about the date format and status codes, which my older notes did not clearly support. It applied the four fixes, using wording for the last one that does not claim I asked. While checking it also found that a comment it had written in `azure-pipelines.yml` ("can be overridden when the pipeline is run") was wrong for variables defined in the YAML, and corrected it.
+**What I did:** Read the walk through, decided to apply all four fixes, and chose how the recruiter sentence should read.
+**Outcome:** `SOLUTION.md` and the comment in `azure-pipelines.yml` updated. Not yet committed.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
