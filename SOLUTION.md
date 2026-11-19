@@ -91,11 +91,29 @@ The brief does not say what unsupported or invalid input returns, so I chose one
 - **Device matching ignores letter case**, because that is SQL Server's default collation. A test pins this.
 - **Option names**: `IQueryCollection` matches keys without regard to case, so `$TOP=5` is accepted as `$top=5`. Values are case-sensitive: `$count=True` returns 400.
 
+## Deviations from the contract
+
+The brief says to document any deviation I introduce on purpose and why. The API follows the contract for the three resources, the `X-Api-Key` header, the OData options and the response shape. These are the places where it goes beyond the contract or differs from the examples in the brief:
+
+| Deviation | Why |
+|---|---|
+| **Extra input limits** on POST: id up to 100 characters, deviceId up to 50, speedKph 0 to 1000, headingDeg 0 to 360. The contract gives ranges only for latitude and longitude. | The columns have fixed sizes, and without limits oversized values crashed with a 500 while nonsense values were saved (D16). A clear 400 is better than either. |
+| **All seven fields are required.** | The example body has all seven, and the contract does not mark any as optional (D12). |
+| **`$top` above 1000 returns 400**, and a negative or non-numeric `$top` returns 400. The contract sets no maximum. | An explicit limit is easier to test and defend than silently capping (D10). |
+| **Anything outside the supported OData subset returns 400**, for example an unknown option, an unsupported operator or a malformed filter. | The contract does not say what unsupported input returns. One rule is simple to test (D3). |
+| **Dates in `$filter` are accepted quoted and unquoted.** | The brief's description shows quotes (`occurredAt ge '...'`) and its example request shows none (D8). |
+| **A POST with an unknown `deviceId` creates the device.** | Realistic for device ingest, and the tests need no extra setup for each new device (D13). |
+| **Timestamps are returned in UTC** as whole seconds with a `Z`, even when the request used another offset (D14). | Matches the format in the brief's examples, so string comparisons behave. |
+| **Latitude and longitude are stored with 6 decimals, speed and heading with 2.** More decimals are rounded, not rejected. | A fixed column precision. See "Known limitations" below. |
+| **Every error body is `{ "error": "..." }`**, including the 404. | The contract does not define an error shape. One shape keeps the assertions simple. |
+| **Test device ids carry a `TEST-` prefix** (for example `TEST-D-10001`), not `D-10001` as in the brief's examples. | The prefix is how cleanup finds the test data without touching anything else (D5). |
+| **The target is an API I wrote**, not a service provided with the brief. | The brief allows a lightweight local target, and it makes the SQL setup and cleanup real (D2). |
+
 ## Known limitations
 
 These are deliberate or known, and documented rather than hidden.
 
-- Latitude and longitude with more than 6 decimals are accepted and rounded to 6 when stored, with no error. The POST response echoes the input, so only a GET shows the stored value (A4).
+- Latitude and longitude with more than 6 decimals are accepted and rounded to 6 when stored, with no error. The POST response echoes the input, so only a GET shows the stored value.
 - The filter parser splits on the text ` and `, so a device id that contains ` and ` inside quotes gives 400.
 - A raw `+02:00` in a URL does not work, because `+` means a space in a query string. A client has to send `%2B`, so no test covers a raw one.
 - The items and the `@odata.count` come from two separate queries, so a write between the two could make them disagree. Tests run one request at a time, so this does not show up.
