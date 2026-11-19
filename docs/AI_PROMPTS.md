@@ -407,6 +407,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 35. First draft of README.md
+
+**Tool:** Claude Code
+**Prompt:** "Start on README.md"
+**What the AI gave:** Read the old stub, `.env.example` and the schema script, then wrote a full first draft of `README.md`: what the API does, prerequisites, the settings table, creating the database once, running the tests with the PowerShell and bash scripts, the second option, how test data is kept apart, the pipeline, the folder layout and links to the other docs.
+**What I did:** Asked for the start of the README. Review and a test of the steps on a clean checkout are still to do.
+**Outcome:** `README.md` replaced the stub with a draft. I then ran its first two steps in a fresh terminal (the schema script and the npm install) and both worked. Later prompt: "Add the start api but state it as part of the testing phase for when we started", which added a "Start the API by hand" section describing `scripts/start-api.ps1` as the way testing started by hand.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
