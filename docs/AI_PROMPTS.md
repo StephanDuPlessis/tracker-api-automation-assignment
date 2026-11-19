@@ -387,6 +387,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 33. The second run script, run-tests-2.ps1
+
+**Tool:** Claude Code
+**Prompt:** "Start on run-tests-2.ps1", then "Because we are testing 2 different strategies, I think we need to keep them seperate, this is is also to compare the 2 solutions"
+**What the AI gave:** A table of the three differences between the two options (no build step, its own collection and environment files, its own report names) and a plan that moved the shared steps into a common file. After my correction it dropped that plan and wrote `scripts/tests/run-tests-2.ps1` as a standalone copy of `run-tests.ps1` with only those three differences, and ran it twice.
+**What I did:** Rejected the shared-file plan because the scripts are part of the comparison of the two options and should stay separate. `run-tests.ps1` was left untouched.
+**Outcome:** Both runs gave exit code 0 with 323 assertions and 0 failed, and the API was started and stopped by the script. Reports go to `tests/reports/newman-export-*`.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
