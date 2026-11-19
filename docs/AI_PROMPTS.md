@@ -442,8 +442,28 @@ Turns about how to export the Copilot chat are left out of this log because they
 **Tool:** Claude Code
 **Prompt:** "Yes, do the demo collection and pipeline parameter"
 **What the AI gave:** `tests/demo/failure-demo.postman_collection.json` (one passing test, two deliberate failures and one skipped test against the seeded data); an optional `demo` argument for `scripts/tests/run-tests.sh` instead of a third run script, with the default behaviour unchanged; and in `azure-pipelines.yml` a boolean parameter `runFailureDemo` (default false) that adds a demo step and a separate test-results step only when ticked. It also added a README section, a layout line and two SOLUTION.md paragraphs (the failing run, and that a skipped test shows as passed in the JUnit export). It ran the demo locally in Git Bash (exit code 1, 4 assertions, 2 failed, 1 skipped, API stopped), a bad argument (exit code 1 with a message) and the normal run (exit code 0, 311 assertions, 0 failed).
-**What I did:** Approved the design. Running the pipeline with the option ticked and checking the result is still to do.
-**Outcome:** Verified locally only. Not yet verified in the pipeline.
+**What I did:** Approved the design, committed and pushed it, then ran the pipeline by hand with "Also run the failure demo" ticked and sent screenshots of the result.
+**Outcome:** Verified. The normal push run stayed green. The manual run failed as intended at the demo step ("Bash exited with code 1"), the stage showed 99.3% tests passed, and the artifact held both the real and the demo reports. The demo HTML report showed 3 assertions, 2 failed and 1 skipped; the real report showed 155 requests, 311 assertions and 0 failed.
+
+---
+
+### 39. docker-compose.yml for SQL Server
+
+**Tool:** Claude Code
+**Prompt:** "Do the docker-compose.yml"
+**What the AI gave:** `docker-compose.yml` with one service, the SQL Server 2022 image the pipeline uses, port 1433, the `sa` password taken from `DB_PASSWORD` in `.env` (it refuses to start without it) and `platform: linux/amd64` for Apple Silicon. It added a "Without LocalDB (Docker)" section to the README with the steps (settings in `.env`, `docker compose up -d`, creating the database with `sqlcmd`, running the tests, `docker compose down`), a layout line, and one sentence in the SOLUTION.md approach table. It checked that Docker is not installed on this machine and said the file could not be run here.
+**What I did:** Asked for the file. Trying it needed a machine with Docker, so I installed Docker Desktop (entry 40).
+**Outcome:** Written first, then verified (entry 40). The same image and SQL authentication path were already proven by the pipeline.
+
+---
+
+### 40. Installing Docker Desktop and testing the compose file
+
+**Tool:** Claude Code
+**Prompts:** "I am going to install docker"; "Can we install it another way?" (the Microsoft Store install failed with an error); then screenshots and short messages as I hit problems: "Virtual Machine Platform is not enabled" in Docker Desktop, "I restarted my PC before step 3" (the Windows Subsystem for Linux needed an update), "The prompt timed out", "Something else opened too" (a WSL welcome window), and the screenshot of Docker Desktop with the engine running and `hello-world` working.
+**What the AI gave:** Install steps. When the Store failed it suggested `winget install --id Docker.DockerDesktop --source winget`, which skips the Store. For the Virtual Machine Platform error it gave the Windows feature command, then `wsl --install --no-distribution` and a restart. When the WSL update prompt timed out it gave `wsl --update`, and it explained that the extra window was just the WSL welcome app. Once `docker --version`, `docker compose version` and `docker run hello-world` worked, the AI tested the compose file itself without touching my `.env`, using a throwaway password in its own session: `docker compose up -d`, a wait for SQL Server (ready in about 8 seconds), applying `db/01_schema.sql`, then `run-tests.ps1` twice against the container, a check that a missing `DB_PASSWORD` stops compose with a message, and `docker compose down`.
+**What I did:** Ran the install and update commands in an administrator PowerShell, restarted Windows, opened Docker Desktop and sent the screenshots. I did not run the compose test myself; the AI ran it.
+**Outcome:** Verified: both runs gave exit code 0 with 311 assertions and 0 failed, the missing-password message appeared, and `docker compose down` left nothing behind. Not tried: Apple Silicon, and `run-tests.sh` against the container.
 
 ---
 

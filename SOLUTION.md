@@ -11,7 +11,7 @@ The brief asks for an automated test suite for a Positions API, test data manage
 | Test runner | Postman collection run with Newman | The recruiter confirmed submissions must use Postman/Newman or ReadyAPI. Newman is headless and has JUnit and HTML reporters (D1, D6). |
 | API under test | .NET 9 minimal API in `src/PositionsApi` | Matches Tracker's C#/.NET stack (D2). |
 | OData | A hand-written parser for only the subset in the brief | Small enough to explain line by line, and anything unsupported returns 400 instead of being half-handled (D3). |
-| Database | SQL Server: LocalDB locally, a Docker service container in the pipeline | No Docker needed on my machine, and the same scripts and settings work in both places (D4). |
+| Database | SQL Server: LocalDB locally, a Docker service container in the pipeline | No Docker needed on my machine, and the same scripts and settings work in both places (D4). A `docker-compose.yml` starts the same SQL Server image for anyone without LocalDB. |
 | Settings | Environment variables, loaded from a gitignored `.env` locally | No secrets in the repository (D7, D18). |
 
 ## Key decisions
@@ -209,3 +209,4 @@ Every prompt that led to real work is logged in [docs/AI_PROMPTS.md](docs/AI_PRO
 - **Swagger and logging**: not needed to test the API, and more to explain.
 - **A 415 for a wrong Content-Type**, and **handling a database outage** with a friendly error: edge cases outside the brief.
 - **A shared run-script file** for the two PowerShell scripts: they are kept separate on purpose so the two Postman options compare like for like (D24).
+- **A Dockerfile, and running the API in a container.** The database uses the official SQL Server image as it is, so there is nothing to build, and `docker-compose.yml` only starts that image. The API runs directly with `dotnet`, locally and on the pipeline agent. Containerising it would add a Dockerfile and a second compose service that the brief does not ask for, and that is more to explain and maintain.
