@@ -397,6 +397,16 @@ Turns about how to export the Copilot chat are left out of this log because they
 
 ---
 
+### 34. Comparison of the two Postman suites in SOLUTION.md
+
+**Tool:** Claude Code
+**Prompt:** "Draft the comparison of the two suites", then "Put it in SOLUTION.md"
+**What the AI gave:** Measured both suites in the repo (request counts, source files, line counts, build step) and drafted a comparison: a table, what was easier and harder in each option, the two run scripts, and which option the pipeline runs. It listed what was not measured and said I should confirm the stated reason for choosing the authored suite. After the second prompt it created `SOLUTION.md` with only that section and marked the file as work in progress.
+**What I did:** Asked for the draft and then for it to be placed in `SOLUTION.md`.
+**Outcome:** `SOLUTION.md` now exists with the comparison section. The rest of the file is still to be written.
+
+---
+
 ## What I reviewed or corrected myself
 
 - Found the validation gap with my own before-fix test, before any AI suggested it (`docs/evidence/`).
