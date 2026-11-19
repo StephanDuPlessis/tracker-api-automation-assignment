@@ -1,0 +1,19 @@
+# SQL Server in a container, for running the project on a machine without LocalDB (Mac, Linux, or
+# Windows without LocalDB). It is the same image the Azure pipeline uses.
+#
+# Start it:  docker compose up -d
+# Stop it:   docker compose down     (this also deletes the data, which is fine: the tests re-create it)
+#
+# Docker Compose reads the .env file in this folder, so DB_PASSWORD comes from there (see .env.example).
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    # The image only exists for 64-bit Intel/AMD. On an Apple Silicon Mac this makes Docker emulate it.
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "Y"
+      # The "sa" password. SQL Server rejects weak ones: at least 8 characters with 3 of: upper case, lower case, digits, symbols.
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env to a strong password before starting}
+    ports:
+      - "1433:1433"

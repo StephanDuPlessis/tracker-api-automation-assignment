@@ -61,6 +61,22 @@ sqlcmd -S "(localdb)\MSSQLLocalDB" -E -i db\01_schema.sql
 
 You do not need to seed by hand. Each test run resets the data itself.
 
+### Without LocalDB (Docker)
+
+On a Mac, on Linux, or on a Windows machine without LocalDB, run SQL Server in a container instead. You need Docker and `sqlcmd`.
+
+1. In `.env`, set `DB_SERVER=localhost`, `DB_USER=sa` and `DB_PASSWORD` to a strong password (at least 8 characters, with upper case, lower case and a digit or symbol). Docker Compose reads the same `.env`.
+2. Start SQL Server: `docker compose up -d`. It needs about 20 seconds before it accepts connections.
+3. Create the database once. Put the password in `SQLCMDPASSWORD` so it is not on the command line (PowerShell shown, bash is `export SQLCMDPASSWORD='...'`):
+
+   ```
+   $env:SQLCMDPASSWORD = '<your DB_PASSWORD>'
+   sqlcmd -S localhost -U sa -C -i db/01_schema.sql
+   ```
+
+4. Run the tests as described below. The run scripts read `DB_USER` and `DB_PASSWORD` from `.env` and use SQL authentication.
+5. When you are done: `docker compose down`. That removes the container and its data, so repeat step 3 next time.
+
 ## Start the API by hand (how testing started)
 
 Testing began by hand, before any automation existed: start the API, then send requests to it with `curl.exe` or Postman and check the answers. `scripts/start-api.ps1` is the script for that. It loads `.env` and runs the API in the foreground at `BASE_URL` (default `http://localhost:5080`):
@@ -134,6 +150,7 @@ tests/demo/                           a small collection with deliberate failure
 tests/reports/                        test reports (gitignored)
 scripts/tests/                        run-tests.ps1, run-tests.sh, run-tests-2.ps1
 azure-pipelines.yml                   the pipeline
+docker-compose.yml                    SQL Server in a container, for machines without LocalDB
 docs/                                 build notes and the AI prompt log
 ```
 
